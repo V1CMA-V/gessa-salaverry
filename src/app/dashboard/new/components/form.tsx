@@ -22,6 +22,7 @@ export default function NewForms() {
   const [fecha, setFecha] = useState('')
   const [lote, setLote] = useState(0)
   const [medida, setMedida] = useState(0)
+  const [cliente, setCliente] = useState('')
 
   async function handleSubmit() {
     const supabase = await createClient()
@@ -37,6 +38,7 @@ export default function NewForms() {
           fecha,
           lote,
           medida,
+          cliente,
         },
       ])
       .select()
@@ -143,6 +145,13 @@ export default function NewForms() {
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
           placeholder="Fecha"
+        />
+        <Label>Cliente</Label>
+        <Input
+          type="text"
+          value={cliente}
+          onChange={(e) => setCliente(e.target.value)}
+          placeholder="Cliente"
         />
       </Step>
     </Stepper>
