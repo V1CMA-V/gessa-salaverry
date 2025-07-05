@@ -9,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import DetailsForm from './details'
 
 export default async function LiberationParams({
   parametrosLiberacion,
@@ -29,9 +30,19 @@ export default async function LiberationParams({
     return null
   }
 
+  const { data: team, error: teamError } = await supabase
+    .from('team')
+    .select('*')
+    .eq('parametros_id', parametrosLiberacion.id)
+
+  if (teamError) {
+    console.error('Error fetching team:', teamError)
+    return null
+  }
+
   return (
     <div className="flex flex-col items-center gap-10 px-8 py- w-full">
-      <div className="w-full flex flex-col items-center gap-4">
+      <div className="w-full max-w-5xl flex flex-col items-center gap-4">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger>
@@ -134,7 +145,7 @@ export default async function LiberationParams({
               <h2 className="text-2xl font-bold">Detalles</h2>
             </AccordionTrigger>
             <AccordionContent>
-              <AceptVal valores={valores_aceptables[0] || null} ID={ID} />
+              <DetailsForm ID={parametrosLiberacion.id} team={team[0]} />
             </AccordionContent>
           </AccordionItem>
         </Accordion>

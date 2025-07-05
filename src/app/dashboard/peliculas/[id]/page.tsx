@@ -77,8 +77,8 @@ export default async function PeliculaPage({
               <strong>{peliculaData?.configuracion}</strong>
             </p>
           </div>
-          <Separator className="w-full" />
         </div>
+        <Separator className="w-full" />
 
         {/* Parametros de Liberacion */}
         {parametrosLiberacion ? (
