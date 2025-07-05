@@ -76,14 +76,15 @@ export default function FormData({ id }: { id: string }) {
       return
     }
 
-    form.reset() // Reset the form after successful submission
+    // Reset the form after successful submission
+    window.location.reload()
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16 items-center"
+        className="flex flex-col gap-8 md:gap-16 items-center px-5"
       >
         <div className="w-full grid grid-cols-2 gap-4 px-3">
           <FormField
@@ -246,11 +247,11 @@ export default function FormData({ id }: { id: string }) {
           control={form.control}
           name="position"
           render={({ field }) => (
-            <FormItem className="px-3 flex flex-col items-center">
+            <FormItem className="px-3 flex flex-col items-center w-full">
               <FormLabel>Posición</FormLabel>
               <FormControl>
                 <Input
-                  className="text-center"
+                  className="text-center w-full"
                   type="number"
                   placeholder="Posición"
                   {...field}
@@ -262,7 +263,7 @@ export default function FormData({ id }: { id: string }) {
           )}
         />
 
-        <Button type="submit" className="mx-5">
+        <Button type="submit" className=" w-full">
           Enviar
         </Button>
       </form>
