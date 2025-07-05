@@ -66,10 +66,13 @@ export default function FormData({ id }: { id: string }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const supabase = await createClient()
 
-    const { error: insertError } = await supabase.from('valores').insert({
-      ...values,
-      parametro_id: id,
-    })
+    const { error: insertError } = await supabase
+      .from('valores')
+      .update({
+        ...values,
+      })
+      .eq('parametro_id', id)
+      .eq('position', values.position)
 
     if (insertError) {
       console.error('Error inserting valores:', insertError)
@@ -77,7 +80,6 @@ export default function FormData({ id }: { id: string }) {
     }
 
     // Reset the form after successful submission
-    window.location.reload()
   }
 
   return (

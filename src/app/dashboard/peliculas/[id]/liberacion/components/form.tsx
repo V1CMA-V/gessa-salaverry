@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { redirect } from 'next/navigation'
 
 const formSchema = z.object({
   kilogramos: z.number().min(2, {
@@ -88,6 +89,8 @@ export default function FormParameter({
       console.error('Error inserting parameters:', error)
       return
     }
+
+    redirect(`/dashboard/peliculas/${pelicula_id}`)
   }
 
   return (

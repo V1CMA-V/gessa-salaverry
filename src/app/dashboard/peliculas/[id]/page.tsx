@@ -105,11 +105,14 @@ export default async function PeliculaPage({
             <p className="text-muted-foreground">
               No hay parametros de validacion disponibles.
             </p>
-            <Link href={`/dashboard/peliculas/${id}/validacion/crear`}>
-              <Button variant="outline">Crear Parametros de Validacion</Button>
-            </Link>
           </div>
         )}
+
+        <Link href={`/dashboard/peliculas/${id}/liberacion/crear`}>
+          <Button variant="outline" className="cursor-pointer">
+            Crear Parametros de Validacion
+          </Button>
+        </Link>
       </div>
     </SidebarInset>
   )
