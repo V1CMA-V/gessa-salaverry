@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import DetailsForm from './details'
+import Table from './tabla'
 
 export default async function LiberationParams({
   parametrosLiberacion,
@@ -41,7 +42,7 @@ export default async function LiberationParams({
   }
 
   return (
-    <div className="flex flex-col items-center gap-10 px-8 py- w-full">
+    <div className="flex flex-col items-center gap-10 px-8 w-full">
       <div className="w-full max-w-5xl flex flex-col items-center gap-4">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
@@ -150,6 +151,8 @@ export default async function LiberationParams({
           </AccordionItem>
         </Accordion>
       </div>
+
+      <Table page_id={parametrosLiberacion.id} />
     </div>
   )
 }

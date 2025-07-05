@@ -10,6 +10,7 @@ export default async function Page() {
   const { data: peliculas, error } = await supabase
     .from('peliculas')
     .select('*')
+    .order('fecha', { ascending: false })
 
   if (error) {
     console.error('Error fetching peliculas:', error)
