@@ -1,3 +1,4 @@
+import { createClient } from '@/app/utils/supabase/server'
 import {
   Card,
   CardAction,
@@ -5,56 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import AddData from './add-data'
-
-const data = [
-  {
-    position: 'Posición 1',
-    values: [100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000],
-  },
-  {
-    position: 'Posición 2',
-    values: [
-      900000, 1000000, 1100000, 1200000, 1300000, 1400000, 1500000, 1600000,
-    ],
-  },
-  {
-    position: 'Posición 3',
-    values: [
-      1700000, 1800000, 1900000, 2000000, 2100000, 2200000, 2300000, 2400000,
-    ],
-  },
-  {
-    position: 'Posición 4',
-    values: [
-      2500000, 2600000, 2700000, 2800000, 2900000, 3000000, 3100000, 3200000,
-    ],
-  },
-  {
-    position: 'Posición 5',
-    values: [
-      3600000, 3700000, 3800000, 3900000, 4000000, 4100000, 4200000, 4300000,
-    ],
-  },
-  {
-    position: 'Posición 6',
-    values: [
-      4400000, 4500000, 4600000, 4700000, 4800000, 4900000, 5000000, 5100000,
-    ],
-  },
-  {
-    position: 'Posición 7',
-    values: [
-      5200000, 5300000, 5400000, 5500000, 5600000, 5700000, 5800000, 5900000,
-    ],
-  },
-  {
-    position: 'Posición 8',
-    values: [
-      6000000, 6100000, 6200000, 6300000, 6400000, 6500000, 6600000, 6700000,
-    ],
-  },
-]
+import BarGraf, { LineGraf, ScatterGraf } from './graficos'
 
 const rowColors = [
   'bg-blue-100', // Posición 1 y 2
@@ -99,9 +53,38 @@ const calculateStats = (data: DataRow[]): Stats => {
   return { min, max, range, mode: modeValue, average }
 }
 
-const stats = calculateStats(data)
+export default async function Table({ page_id }: { page_id: string }) {
+  const supabase = await createClient()
 
-export default function Table({ page_id }: { page_id: string }) {
+  const { data: pageData, error } = await supabase
+    .from('valores')
+    .select('*')
+    .eq('parametro_id', page_id)
+    .order('position', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching data:', error)
+    return <div>Error loading data</div>
+  }
+
+  // Transformar los datos al formato esperado por la tabla
+  const transformedData = pageData.map((item) => ({
+    position: `Posición ${item.position}`,
+    values: [
+      item.valor1,
+      item.valor2,
+      item.valor3,
+      item.valor4,
+      item.valor5,
+      item.valor6,
+      item.valor7,
+      item.valor8,
+    ],
+  }))
+
+  // Calcular estadísticas con los datos transformados
+  const stats = calculateStats(transformedData)
+
   return (
     <div className="w-full object-contain">
       <Card className="@container/card">
@@ -132,7 +115,7 @@ export default function Table({ page_id }: { page_id: string }) {
                 </tr>
               </thead>
               <tbody>
-                {data.map((row, rowIndex) => (
+                {transformedData.map((row, rowIndex) => (
                   <tr
                     key={rowIndex}
                     className={rowColors[Math.floor(rowIndex / 2)]}
@@ -143,7 +126,7 @@ export default function Table({ page_id }: { page_id: string }) {
                     {row.values.map((value, valueIndex) => (
                       <td
                         key={valueIndex}
-                        className="border border-gray-300 px-4 py-2 text-right"
+                        className="border border-gray-300 px-4 py-2 text-center"
                       >
                         {value.toLocaleString()}
                       </td>
@@ -169,6 +152,34 @@ export default function Table({ page_id }: { page_id: string }) {
             <div className="text-right">{stats.mode.toLocaleString()}</div>
             <div className="font-medium">Promedio:</div>
             <div className="text-right">{stats.average.toLocaleString()}</div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            Graficas de Muestreo
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex w-full flex-col gap-6">
+            <Tabs defaultValue="lines">
+              <TabsList>
+                <TabsTrigger value="lines">Lineas</TabsTrigger>
+                <TabsTrigger value="scatter">Puntos</TabsTrigger>
+                <TabsTrigger value="bars">Barras</TabsTrigger>
+              </TabsList>
+              <TabsContent value="lines">
+                <LineGraf series={transformedData} />
+              </TabsContent>
+              <TabsContent value="scatter">
+                <ScatterGraf series={transformedData} />
+              </TabsContent>
+              <TabsContent value="bars">
+                <BarGraf series={transformedData} />
+              </TabsContent>
+            </Tabs>
           </div>
         </CardContent>
       </Card>
