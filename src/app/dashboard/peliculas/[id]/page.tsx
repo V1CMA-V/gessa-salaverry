@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset } from '@/components/ui/sidebar'
 import Link from 'next/link'
-import LiberationParams from './components/liberacionparams'
+import LiberationParams from './components/liberacion-params'
+import ValidationParam from './components/validation'
 
 export default async function PeliculaPage({
   params,
@@ -36,7 +37,7 @@ export default async function PeliculaPage({
 
   const peliculaData = pelicula?.[0]
   const parametrosLiberacion = parametros?.[0]
-  const parametrosValidacion = parametros?.[1]
+  const parametrosValidacion = parametros?.slice(1)
 
   return (
     <SidebarInset>
@@ -98,8 +99,11 @@ export default async function PeliculaPage({
         )}
 
         {/* Parametros de Validacion */}
-        {parametrosValidacion ? (
-          <p>HHola</p>
+        {parametrosValidacion && parametrosValidacion.length > 0 ? (
+          <ValidationParam
+            parametrosValidacion={parametrosValidacion}
+            ID={id}
+          />
         ) : (
           <div className="flex flex-col items-center gap-4 w-full p-4">
             <p className="text-muted-foreground">
