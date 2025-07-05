@@ -78,15 +78,15 @@ export default function AceptVal({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      electrostatico: valores?.electrostatico,
-      encog_logn: valores?.encog_logn,
-      encog_tans: valores?.encog_tans,
-      KOF_dinam: valores?.KOF_dinam,
-      KOF_static: valores?.KOF_static,
-      maximo: valores?.maximo,
-      minimo: valores?.minimo,
-      moda: valores?.moda,
-      rango: valores?.rango,
+      electrostatico: valores?.electrostatico ?? undefined,
+      encog_logn: valores?.encog_logn ?? undefined,
+      encog_tans: valores?.encog_tans ?? undefined,
+      KOF_dinam: valores?.KOF_dinam ?? undefined,
+      KOF_static: valores?.KOF_static ?? undefined,
+      maximo: valores?.maximo ?? undefined,
+      minimo: valores?.minimo ?? undefined,
+      moda: valores?.moda ?? undefined,
+      rango: valores?.rango ?? undefined,
     },
   })
 
@@ -144,7 +144,7 @@ export default function AceptVal({
                 <Input
                   className="text-center"
                   type="number"
-                  placeholder={`${valores?.encog_logn || null}%`}
+                  placeholder={`${valores?.encog_logn || ''}%`}
                   {...field}
                   onChange={(e) => field.onChange(e.target.valueAsNumber)}
                 />
@@ -166,7 +166,7 @@ export default function AceptVal({
                 <Input
                   className="text-center"
                   type="number"
-                  placeholder={`${valores?.encog_tans || null}%`}
+                  placeholder={`${valores?.encog_tans || ''}%`}
                   {...field}
                   onChange={(e) => field.onChange(e.target.valueAsNumber)}
                 />
@@ -185,7 +185,7 @@ export default function AceptVal({
                 <Input
                   className="text-center"
                   type="number"
-                  placeholder={`${valores?.KOF_static || null}`}
+                  placeholder={`${valores?.KOF_static || ''}`}
                   {...field}
                   onChange={(e) => field.onChange(e.target.valueAsNumber)}
                 />
@@ -204,7 +204,7 @@ export default function AceptVal({
                 <Input
                   className="text-center"
                   type="number"
-                  placeholder={`${valores?.KOF_dinam || null}`}
+                  placeholder={`${valores?.KOF_dinam || ''}`}
                   {...field}
                   onChange={(e) => field.onChange(e.target.valueAsNumber)}
                 />
@@ -223,7 +223,7 @@ export default function AceptVal({
                 <Input
                   type="number"
                   className="text-center"
-                  placeholder={`${valores?.electrostatico || null}`}
+                  placeholder={`${valores?.electrostatico || ''}`}
                   {...field}
                   onChange={(e) => field.onChange(e.target.valueAsNumber)}
                 />
@@ -242,7 +242,7 @@ export default function AceptVal({
                 <Input
                   className="text-center"
                   type="number"
-                  placeholder={`${valores?.maximo || null}`}
+                  placeholder={`${valores?.maximo || ''}`}
                   {...field}
                   onChange={(e) => field.onChange(e.target.valueAsNumber)}
                 />
@@ -262,7 +262,7 @@ export default function AceptVal({
                 <Input
                   className="text-center"
                   type="number"
-                  placeholder={`${valores?.minimo || null}`}
+                  placeholder={`${valores?.minimo || ''}`}
                   {...field}
                   onChange={(e) => field.onChange(e.target.valueAsNumber)}
                 />
@@ -281,7 +281,7 @@ export default function AceptVal({
                 <Input
                   className="text-center"
                   type="number"
-                  placeholder={`${valores?.moda || null}`}
+                  placeholder={`${valores?.moda || ''}`}
                   {...field}
                   onChange={(e) => field.onChange(e.target.valueAsNumber)}
                 />
@@ -301,7 +301,7 @@ export default function AceptVal({
                 <Input
                   className="text-center"
                   type="number"
-                  placeholder={`${valores?.rango || null}`}
+                  placeholder={`${valores?.rango || ''}`}
                   {...field}
                   onChange={(e) => field.onChange(e.target.valueAsNumber)}
                 />

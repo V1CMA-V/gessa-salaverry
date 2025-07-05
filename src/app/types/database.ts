@@ -51,56 +51,65 @@ export type Database = {
       parametros: {
         Row: {
           created_at: string
-          datos_id: string
           id: string
           kilogramos: number
-          nombre: string
           pelicula_id: string
           prearrastre: number
           presion_bobinador_D: number
           presion_bobinador_I: number
-          temperaturas_canions: Json
+          temperaturas_canions: {
+            a?: number
+            b?: number
+            c?: number
+          }
           tension_bobinador_1: number
           tension_bobinador_2: number
           velocidad_jalador: number
-          velocidad_moto_A: number
+          velocidad_motor_A: number
           velocidad_motor_B: number
+          velocidad_motor_C: number
           velocidad_turbo: number
         }
         Insert: {
           created_at?: string
-          datos_id?: string
           id?: string
           kilogramos: number
-          nombre: string
           pelicula_id: string
           prearrastre: number
           presion_bobinador_D: number
           presion_bobinador_I: number
-          temperaturas_canions: Json
+          temperaturas_canions: {
+            a?: number
+            b?: number
+            c?: number
+          }
           tension_bobinador_1: number
           tension_bobinador_2: number
           velocidad_jalador: number
-          velocidad_moto_A: number
+          velocidad_motor_A: number
           velocidad_motor_B: number
+          velocidad_motor_C: number
           velocidad_turbo: number
         }
         Update: {
           created_at?: string
-          datos_id?: string
           id?: string
           kilogramos?: number
-          nombre?: string
           pelicula_id?: string
           prearrastre?: number
           presion_bobinador_D?: number
           presion_bobinador_I?: number
-          temperaturas_canions?: Json
+          temperaturas_canions?: {
+            a?: number
+            b?: number
+            c?: number
+          }
           tension_bobinador_1?: number
           tension_bobinador_2?: number
           velocidad_jalador?: number
-          velocidad_moto_A?: number
+          velocidad_motor_A?: number
           velocidad_motor_B?: number
+          velocidad_motor_C?: number
           velocidad_turbo?: number
         }
         Relationships: [
@@ -117,6 +126,7 @@ export type Database = {
         Row: {
           calibre: number
           caracteristicas: string
+          cliente: string
           codigo_formulacion: string
           configuracion: string
           fecha: string
@@ -127,9 +137,10 @@ export type Database = {
         Insert: {
           calibre: number
           caracteristicas: string
+          cliente: string
           codigo_formulacion: string
           configuracion: string
-          fehca: string
+          fecha: string
           id?: string
           lote: number
           medida: number
@@ -137,9 +148,10 @@ export type Database = {
         Update: {
           calibre?: number
           caracteristicas?: string
+          cliente?: string
           codigo_formulacion?: string
           configuracion?: string
-          fehca?: string
+          fecha?: string
           id?: string
           lote?: number
           medida?: number
@@ -219,43 +231,43 @@ export type Database = {
       }
       valores_aceptables: {
         Row: {
-          electrostatico: number
-          encog_logn: number
-          encog_tans: number
+          electrostatico: number | null
+          encog_logn: number | null
+          encog_tans: number | null
           id: string
-          KOF_dinam: number
-          KOF_static: number
-          maximo: number
-          minimo: number
-          moda: number
+          KOF_dinam: number | null
+          KOF_static: number | null
+          maximo: number | null
+          minimo: number | null
+          moda: number | null
           pelicula_id: string
-          rango: number
+          rango: number | null
         }
         Insert: {
-          electrostatico: number
-          encog_logn: number
-          encog_tans: number
+          electrostatico?: number | null
+          encog_logn?: number | null
+          encog_tans?: number | null
           id?: string
-          KOF_dinam: number
-          KOF_static: number
-          maximo: number
-          minimo: number
-          moda: number
+          KOF_dinam?: number | null
+          KOF_static?: number | null
+          maximo?: number | null
+          minimo?: number | null
+          moda?: number | null
           pelicula_id: string
-          rango: number
+          rango?: number | null
         }
         Update: {
-          electrostatico?: number
-          encog_logn?: number
-          encog_tans?: number
+          electrostatico?: number | null
+          encog_logn?: number | null
+          encog_tans?: number | null
           id?: string
-          KOF_dinam?: number
-          KOF_static?: number
-          maximo?: number
-          minimo?: number
-          moda?: number
+          KOF_dinam?: number | null
+          KOF_static?: number | null
+          maximo?: number | null
+          minimo?: number | null
+          moda?: number | null
           pelicula_id?: string
-          rango?: number
+          rango?: number | null
         }
         Relationships: [
           {

@@ -98,8 +98,8 @@ export default async function PeliculaPage({
         )}
 
         {/* Parametros de Validacion */}
-        {/* {parametrosValidacion ? (
-          <LiberationParams parametrosLiberacion={parametrosValidacion} />
+        {parametrosValidacion ? (
+          <p>HHola</p>
         ) : (
           <div className="flex flex-col items-center gap-4 w-full p-4">
             <p className="text-muted-foreground">
@@ -109,7 +109,7 @@ export default async function PeliculaPage({
               <Button variant="outline">Crear Parametros de Validacion</Button>
             </Link>
           </div>
-        )} */}
+        )}
       </div>
     </SidebarInset>
   )
