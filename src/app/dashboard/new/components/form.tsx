@@ -32,9 +32,12 @@ import { CalendarIcon } from "lucide-react";
 
 import { format } from "date-fns";
 
+import { createClient } from "@/app/utils/supabase/client";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { es } from "date-fns/locale";
+import { redirect } from "next/navigation";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   medida: z
@@ -97,10 +100,45 @@ export default function NewForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // TODO: Crear logica a base de datos
-    // const supabase = await createClient();
-    console.log(values);
+    const supabase = await createClient();
 
-    // redirect(`/dashboard/peliculas/${pelicula_id}`)
+    const { data: lote, error } = await supabase
+      .from("lote")
+      .insert({
+        num: values.num,
+        peso_objetivo: values.peso_objetivo,
+        peso_rollo: values.peso_rollo,
+      })
+      .select();
+
+    if (error) {
+      console.error("Error inserting lote:", error);
+      toast.error("Error al insertar el lote");
+      return;
+    }
+
+    const { data: pelicula, error: errorPelicula } = await supabase
+      .from("peliculas")
+      .insert({
+        fecha: values.fecha,
+        cliente: values.cliente,
+        medida: values.medida,
+        calibre: values.calibre,
+        caracteristicas: values.caracteristicas,
+        codigo_formulacion: values.codigo_formulacion,
+        configuracion: values.configuracion,
+        lote: lote[0].id,
+      })
+      .select();
+
+    if (errorPelicula) {
+      console.error("Error inserting pelicula:", errorPelicula);
+      toast.error("Error al insertar la película");
+      return;
+    }
+
+    toast.success("Película insertada correctamente");
+    redirect(`/dashboard/peliculas/${pelicula[0].id}`);
   }
 
   return (
