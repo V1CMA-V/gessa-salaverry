@@ -1,7 +1,7 @@
 import { SiteHeader } from '@/components/site-header'
 import { SidebarInset } from '@/components/ui/sidebar'
 
-import NewForms from './components/form'
+import NewForm from './components/form'
 
 export default function NewData() {
   return (
@@ -18,7 +18,7 @@ export default function NewData() {
         </div>
 
         {/* Aquí iría el formulario de creación de película */}
-        <NewForms />
+        <NewForm />
       </div>
     </SidebarInset>
   )
