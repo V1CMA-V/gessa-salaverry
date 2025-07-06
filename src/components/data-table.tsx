@@ -211,7 +211,7 @@ const columns: ColumnDef<SchemaType>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => (
+    cell: () => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
