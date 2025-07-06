@@ -224,7 +224,7 @@ const columns: ColumnDef<SchemaType>[] = [
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32 text-center">
-          <TableCellViewer item={row.original} />
+          <TableCellViewer />
           <DropdownMenuSeparator />
           <DropdownMenuItem variant="destructive" className="text-center">
             Eliminar
@@ -519,10 +519,8 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
   )
 }
 
-function TableCellViewer({ item }: { item: SchemaType }) {
+function TableCellViewer() {
   const isMobile = useIsMobile()
-
-  console.log('TableCellViewer item:', item)
 
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'}>

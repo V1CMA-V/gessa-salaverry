@@ -13,10 +13,8 @@ type SchemaType = Database['public']['Tables']['parametros']['Row']
 
 export default async function ValidationParam({
   parametrosValidacion,
-  ID,
 }: {
   parametrosValidacion: SchemaType[]
-  ID: string
 }) {
   return (
     <div className="flex flex-col items-center gap-10 px-8 w-full">
@@ -33,7 +31,7 @@ export default async function ValidationParam({
                 {/* Muestra de parametros */}
                 <ViewParams parametros={parametro} />
                 {/* Mostrar los Detalles */}
-                <ViewDetails parametros={parametro} ID={ID} />
+                <ViewDetails parametros={parametro} />
               </Accordion>
 
               <Table page_id={parametro.id} />

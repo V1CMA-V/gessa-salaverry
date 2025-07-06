@@ -11,16 +11,14 @@ type SchemaType = Database['public']['Tables']['parametros']['Row']
 
 export default async function ViewDetails({
   parametros,
-  ID,
 }: {
   parametros: SchemaType
-  ID?: string
 }) {
   const supabase = await createClient()
   const { data: team, error: teamError } = await supabase
     .from('team')
     .select('*')
-    .eq('parametros_id', ID)
+    .eq('parametros_id', parametros.id)
 
   if (teamError) {
     console.error('Error fetching team:', teamError)

@@ -96,7 +96,7 @@ export default function DetailsForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="Jesus Alberto Borges Solis">
+                  <SelectItem className="" value="Jesus Alberto Borges Solis">
                     Jesus Alberto Borges Solis
                   </SelectItem>
                   <SelectItem value="Andre Mora Zempoalteca">

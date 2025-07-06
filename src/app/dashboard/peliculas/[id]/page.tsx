@@ -100,10 +100,7 @@ export default async function PeliculaPage({
 
         {/* Parametros de Validacion */}
         {parametrosValidacion && parametrosValidacion.length > 0 ? (
-          <ValidationParam
-            parametrosValidacion={parametrosValidacion}
-            ID={id}
-          />
+          <ValidationParam parametrosValidacion={parametrosValidacion} />
         ) : (
           <div className="flex flex-col items-center gap-4 w-full p-4">
             <p className="text-muted-foreground">
