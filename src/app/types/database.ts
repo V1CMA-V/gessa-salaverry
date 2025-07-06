@@ -9,44 +9,26 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      datos: {
+      lote: {
         Row: {
-          created_at: string
-          id: number
-          parametros_id: string
-          position: number
-          valor_id: string
+          id: string
+          num: string
+          peso_objetivo: number
+          peso_rollo: number
         }
         Insert: {
-          created_at?: string
-          id?: number
-          parametros_id: string
-          position: number
-          valor_id?: string
+          id?: string
+          num: string
+          peso_objetivo: number
+          peso_rollo: number
         }
         Update: {
-          created_at?: string
-          id?: number
-          parametros_id?: string
-          position?: number
-          valor_id?: string
+          id?: string
+          num?: string
+          peso_objetivo?: number
+          peso_rollo?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: 'datos_parametros_id_fkey'
-            columns: ['parametros_id']
-            isOneToOne: false
-            referencedRelation: 'parametros'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'datos_valor_id_fkey'
-            columns: ['valor_id']
-            isOneToOne: false
-            referencedRelation: 'valores'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       parametros: {
         Row: {
@@ -58,9 +40,9 @@ export type Database = {
           presion_bobinador_D: number
           presion_bobinador_I: number
           temperaturas_canions: {
-            a?: number
-            b?: number
-            c?: number
+            a: number
+            b: number
+            c: number
           }
           tension_bobinador_1: number
           tension_bobinador_2: number
@@ -79,9 +61,9 @@ export type Database = {
           presion_bobinador_D: number
           presion_bobinador_I: number
           temperaturas_canions: {
-            a?: number
-            b?: number
-            c?: number
+            a: number
+            b: number
+            c: number
           }
           tension_bobinador_1: number
           tension_bobinador_2: number
@@ -100,9 +82,9 @@ export type Database = {
           presion_bobinador_D?: number
           presion_bobinador_I?: number
           temperaturas_canions?: {
-            a?: number
-            b?: number
-            c?: number
+            a: number
+            b: number
+            c: number
           }
           tension_bobinador_1?: number
           tension_bobinador_2?: number
@@ -131,7 +113,7 @@ export type Database = {
           configuracion: string
           fecha: string
           id: string
-          lote: number
+          lote: string
           medida: number
         }
         Insert: {
@@ -142,7 +124,7 @@ export type Database = {
           configuracion: string
           fecha: string
           id?: string
-          lote: number
+          lote: string
           medida: number
         }
         Update: {
@@ -153,34 +135,42 @@ export type Database = {
           configuracion?: string
           fecha?: string
           id?: string
-          lote?: number
+          lote?: string
           medida?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'peliculas_lote_fkey'
+            columns: ['lote']
+            isOneToOne: false
+            referencedRelation: 'lote'
+            referencedColumns: ['id']
+          }
+        ]
       }
       team: {
         Row: {
-          hora_muestreo: string
+          hora_muestreo: string | null
           id: string
-          name_analista: string
-          name_operator: string
-          parada: number
+          name_analista: string | null
+          name_operator: string | null
+          parada: number | null
           parametros_id: string | null
         }
         Insert: {
-          hora_muestreo: string
+          hora_muestreo?: string | null
           id?: string
-          name_analista: string
-          name_operator: string
-          parada: number
+          name_analista?: string | null
+          name_operator?: string | null
+          parada?: number | null
           parametros_id?: string | null
         }
         Update: {
-          hora_muestreo?: string
+          hora_muestreo?: string | null
           id?: string
-          name_analista?: string
-          name_operator?: string
-          parada?: number
+          name_analista?: string | null
+          name_operator?: string | null
+          parada?: number | null
           parametros_id?: string | null
         }
         Relationships: [
@@ -195,39 +185,56 @@ export type Database = {
       }
       valores: {
         Row: {
-          '1': number | null
-          '2': number | null
-          '3': number | null
-          '4': number | null
-          '5': number | null
-          '6': number | null
-          '7': number | null
-          '8': number | null
+          created_at: string
           id: string
+          parametro_id: string
+          position: number | null
+          valor1: number | null
+          valor2: number | null
+          valor3: number | null
+          valor4: number | null
+          valor5: number | null
+          valor6: number | null
+          valor7: number | null
+          valor8: number | null
         }
         Insert: {
-          '1'?: number | null
-          '2'?: number | null
-          '3'?: number | null
-          '4'?: number | null
-          '5'?: number | null
-          '6'?: number | null
-          '7'?: number | null
-          '8'?: number | null
+          created_at?: string
           id?: string
+          parametro_id: string
+          position?: number | null
+          valor1?: number | null
+          valor2?: number | null
+          valor3?: number | null
+          valor4?: number | null
+          valor5?: number | null
+          valor6?: number | null
+          valor7?: number | null
+          valor8?: number | null
         }
         Update: {
-          '1'?: number | null
-          '2'?: number | null
-          '3'?: number | null
-          '4'?: number | null
-          '5'?: number | null
-          '6'?: number | null
-          '7'?: number | null
-          '8'?: number | null
+          created_at?: string
           id?: string
+          parametro_id?: string
+          position?: number | null
+          valor1?: number | null
+          valor2?: number | null
+          valor3?: number | null
+          valor4?: number | null
+          valor5?: number | null
+          valor6?: number | null
+          valor7?: number | null
+          valor8?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'valores_parametro_id_fkey'
+            columns: ['parametro_id']
+            isOneToOne: false
+            referencedRelation: 'parametros'
+            referencedColumns: ['id']
+          }
+        ]
       }
       valores_aceptables: {
         Row: {
@@ -270,13 +277,6 @@ export type Database = {
           rango?: number | null
         }
         Relationships: [
-          {
-            foreignKeyName: 'valores_aceptables_pelicula_id_fkey'
-            columns: ['pelicula_id']
-            isOneToOne: false
-            referencedRelation: 'peliculas'
-            referencedColumns: ['id']
-          },
           {
             foreignKeyName: 'valores_aceptables_pelicula_id_fkey1'
             columns: ['pelicula_id']
