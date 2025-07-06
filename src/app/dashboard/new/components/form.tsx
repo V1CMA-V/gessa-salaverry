@@ -34,6 +34,7 @@ import { format } from "date-fns";
 
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { es } from "date-fns/locale";
 
 const formSchema = z.object({
   medida: z
@@ -125,7 +126,9 @@ export default function NewForm() {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(field.value, "PPP", {
+                          locale: es,
+                        })
                       ) : (
                         <span>Escoja una fecha</span>
                       )}
@@ -135,11 +138,12 @@ export default function NewForm() {
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
+                    locale={es}
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
                     disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
+                      date < new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
                     }
                     captionLayout="dropdown"
                   />
