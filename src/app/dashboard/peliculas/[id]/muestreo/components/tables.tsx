@@ -43,7 +43,6 @@ export default async function MuestreoTables({
   }
 
   const paradasPorTarima = Math.floor(peso_objetivo / (peso_rollo * ColumnInto))
-  console.log(paradasPorTarima)
 
   // Utilidad para dividir en chunks
   function chunkArray<T>(array: T[], chunkSize: number): T[][] {
