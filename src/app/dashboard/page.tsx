@@ -1,19 +1,21 @@
-import { DataTable } from '@/components/data-table'
-import { SectionCards } from '@/components/section-cards'
-import { SiteHeader } from '@/components/site-header'
-import { SidebarInset } from '@/components/ui/sidebar'
+import { DataTable } from "@/components/data-table"
+import { SectionCards } from "@/components/section-cards"
+import { SiteHeader } from "@/components/site-header"
+import { SidebarInset } from "@/components/ui/sidebar"
 
-import { createClient } from '../utils/supabase/server'
+import { createClient } from "../utils/supabase/server"
+
+export const metadata = {
+  title: "Dashboard",
+  description: "Dashboard"
+}
 
 export default async function Page() {
   const supabase = await createClient()
-  const { data: peliculas, error } = await supabase
-    .from('peliculas')
-    .select('*')
-    .order('fecha', { ascending: false })
+  const { data: peliculas, error } = await supabase.from("peliculas").select("*").order("fecha", { ascending: false })
 
   if (error) {
-    console.error('Error fetching peliculas:', error)
+    console.error("Error fetching peliculas:", error)
     return <div>Error loading peliculas</div>
   }
 
