@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { LineChart } from '@mui/x-charts/LineChart'
+import { LineChart } from "@mui/x-charts/LineChart";
 
 import {
   closestCenter,
@@ -12,15 +12,15 @@ import {
   useSensors,
   type DragEndEvent,
   type UniqueIdentifier,
-} from '@dnd-kit/core'
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
+} from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   arrayMove,
   SortableContext,
   useSortable,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   IconChevronDown,
   IconChevronLeft,
@@ -32,7 +32,7 @@ import {
   IconLayoutColumns,
   IconPlus,
   IconTrendingUp,
-} from '@tabler/icons-react'
+} from "@tabler/icons-react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -47,13 +47,14 @@ import {
   SortingState,
   useReactTable,
   VisibilityState,
-} from '@tanstack/react-table'
-import * as React from 'react'
+} from "@tanstack/react-table";
+import * as React from "react";
 
-import { Database } from '@/app/types/database'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Database } from "@/app/types/database";
+import { createClient } from "@/app/utils/supabase/client";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Drawer,
   DrawerClose,
@@ -63,7 +64,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer'
+} from "@/components/ui/drawer";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -71,16 +72,16 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Label } from '@/components/ui/label'
+} from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -88,17 +89,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { Tabs, TabsContent } from '@/components/ui/tabs'
-import { useIsMobile } from '@/hooks/use-mobile'
-import Link from 'next/link'
+} from "@/components/ui/table";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { useIsMobile } from "@/hooks/use-mobile";
+import Link from "next/link";
+import { toast } from "sonner";
 
-type SchemaType = Database['public']['Tables']['peliculas']['Row']
+type SchemaType = Database["public"]["Tables"]["peliculas"]["Row"];
 // Create a separate component for the drag handle
 function DragHandle({ id }: { id: string }) {
   const { attributes, listeners } = useSortable({
     id,
-  })
+  });
 
   return (
     <Button
@@ -111,23 +113,23 @@ function DragHandle({ id }: { id: string }) {
       <IconGripVertical className="text-muted-foreground size-3" />
       <span className="sr-only">Arrastrar para reordenar</span>
     </Button>
-  )
+  );
 }
 
 const columns: ColumnDef<SchemaType>[] = [
   {
-    id: 'drag',
+    id: "drag",
     header: () => null,
     cell: ({ row }) => <DragHandle id={row.original.id} />,
   },
   {
-    id: 'select',
+    id: "select",
     header: ({ table }) => (
       <div className="flex items-center justify-center">
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
+            (table.getIsSomePageRowsSelected() && "indeterminate")
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
@@ -147,8 +149,8 @@ const columns: ColumnDef<SchemaType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'header',
-    header: 'Fecha de Creación',
+    accessorKey: "header",
+    header: "Fecha de Creación",
     cell: ({ row }) => {
       return (
         <Link href={`/dashboard/peliculas/${row.original.id}`}>
@@ -158,13 +160,13 @@ const columns: ColumnDef<SchemaType>[] = [
             </Badge>
           </div>
         </Link>
-      )
+      );
     },
     enableHiding: false,
   },
   {
-    accessorKey: 'type',
-    header: 'Lote',
+    accessorKey: "type",
+    header: "Lote",
     cell: ({ row }) => (
       <div className="w-32">
         <Badge variant="outline" className="text-muted-foreground px-1.5">
@@ -174,8 +176,8 @@ const columns: ColumnDef<SchemaType>[] = [
     ),
   },
   {
-    accessorKey: 'status',
-    header: 'Configuracion',
+    accessorKey: "status",
+    header: "Configuracion",
     cell: ({ row }) => (
       <Badge variant="outline" className="text-muted-foreground px-1.5">
         {row.original.configuracion}
@@ -183,7 +185,7 @@ const columns: ColumnDef<SchemaType>[] = [
     ),
   },
   {
-    accessorKey: 'target',
+    accessorKey: "target",
     header: () => <div className="w-full text-center">Calibre</div>,
     cell: ({ row }) => (
       <div className=" items-center justify-center flex ">
@@ -194,7 +196,7 @@ const columns: ColumnDef<SchemaType>[] = [
     ),
   },
   {
-    accessorKey: 'codigo',
+    accessorKey: "codigo",
     header: () => (
       <div className="w-full text-center">Codigo de Formulacion</div>
     ),
@@ -203,15 +205,15 @@ const columns: ColumnDef<SchemaType>[] = [
     ),
   },
   {
-    accessorKey: 'caracteristicas',
-    header: 'Caracteristicas',
+    accessorKey: "caracteristicas",
+    header: "Caracteristicas",
     cell: ({ row }) => {
-      return <p className="text-left">{row.original.caracteristicas}</p>
+      return <p className="text-left">{row.original.caracteristicas}</p>;
     },
   },
   {
-    id: 'actions',
-    cell: () => (
+    id: "actions",
+    cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -226,23 +228,49 @@ const columns: ColumnDef<SchemaType>[] = [
         <DropdownMenuContent align="end" className="w-32 text-center">
           <TableCellViewer />
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive" className="text-center">
+          <DropdownMenuItem
+            variant="destructive"
+            className="text-center"
+            onClick={() => deletePelicula(row.original.id, row.original.lote)}
+          >
             Eliminar
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
   },
-]
+];
+
+async function deletePelicula(id: string, lote: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("peliculas").delete().eq("id", id);
+  if (error) {
+    console.error("Error deleting pelicula:", error);
+    return;
+  }
+
+  const { error: errorLote } = await supabase
+    .from("lote")
+    .delete()
+    .eq("id", lote);
+
+  if (errorLote) {
+    console.error("Error deleting lote:", errorLote);
+    return;
+  }
+
+  toast.success("Película eliminada correctamente");
+  window.location.reload();
+}
 
 function DraggableRow({ row }: { row: Row<SchemaType> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
-  })
+  });
 
   return (
     <TableRow
-      data-state={row.getIsSelected() && 'selected'}
+      data-state={row.getIsSelected() && "selected"}
       data-dragging={isDragging}
       ref={setNodeRef}
       className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
@@ -257,33 +285,33 @@ function DraggableRow({ row }: { row: Row<SchemaType> }) {
         </TableCell>
       ))}
     </TableRow>
-  )
+  );
 }
 
 export function DataTable({ data: initialData }: { data: SchemaType[] }) {
-  const [data, setData] = React.useState(() => initialData)
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [data, setData] = React.useState(() => initialData);
+  const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  );
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
-  })
-  const sortableId = React.useId()
+  });
+  const sortableId = React.useId();
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
     useSensor(KeyboardSensor, {})
-  )
+  );
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
     () => data?.map(({ id }) => id) || [],
     [data]
-  )
+  );
 
   const table = useReactTable({
     data,
@@ -308,16 +336,16 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-  })
+  });
 
   function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event
+    const { active, over } = event;
     if (active && over && active.id !== over.id) {
       setData((data) => {
-        const oldIndex = dataIds.indexOf(active.id)
-        const newIndex = dataIds.indexOf(over.id)
-        return arrayMove(data, oldIndex, newIndex)
-      })
+        const oldIndex = dataIds.indexOf(active.id);
+        const newIndex = dataIds.indexOf(over.id);
+        return arrayMove(data, oldIndex, newIndex);
+      });
     }
   }
 
@@ -342,7 +370,7 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
                 .getAllColumns()
                 .filter(
                   (column) =>
-                    typeof column.accessorFn !== 'undefined' &&
+                    typeof column.accessorFn !== "undefined" &&
                     column.getCanHide()
                 )
                 .map((column) => {
@@ -357,14 +385,16 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
                     >
                       {column.id}
                     </DropdownMenuCheckboxItem>
-                  )
+                  );
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="sm">
-            <IconPlus />
-            <span className="hidden lg:inline">Add Section</span>
-          </Button>
+          <Link href="/dashboard/new">
+            <Button variant="outline" size="sm" className="cursor-pointer">
+              <IconPlus />
+              <span className="hidden lg:inline">Agregar Película</span>
+            </Button>
+          </Link>
         </div>
       </div>
       <TabsContent
@@ -393,7 +423,7 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
                                 header.getContext()
                               )}
                         </TableHead>
-                      )
+                      );
                     })}
                   </TableRow>
                 ))}
@@ -424,7 +454,7 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
         </div>
         <div className="flex items-center justify-between px-4">
           <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
-            {table.getFilteredSelectedRowModel().rows.length} de{' '}
+            {table.getFilteredSelectedRowModel().rows.length} de{" "}
             {table.getFilteredRowModel().rows.length} fila(s) seleccionada(s).
           </div>
           <div className="flex w-full items-center gap-8 lg:w-fit">
@@ -435,7 +465,7 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
               <Select
                 value={`${table.getState().pagination.pageSize}`}
                 onValueChange={(value) => {
-                  table.setPageSize(Number(value))
+                  table.setPageSize(Number(value));
                 }}
               >
                 <SelectTrigger size="sm" className="w-20" id="rows-per-page">
@@ -453,7 +483,7 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
               </Select>
             </div>
             <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Pagina {table.getState().pagination.pageIndex + 1} de{' '}
+              Pagina {table.getState().pagination.pageIndex + 1} de{" "}
               {table.getPageCount()}
             </div>
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
@@ -516,14 +546,14 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
     </Tabs>
-  )
+  );
 }
 
 function TableCellViewer() {
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
 
   return (
-    <Drawer direction={isMobile ? 'bottom' : 'right'}>
+    <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
         <Button variant="link" className="text-foreground w-fit px-0 text-left">
           Editar
@@ -545,7 +575,7 @@ function TableCellViewer() {
                   {
                     data: [2, 5.5, 2, 8.5, 1.5, 5],
                     valueFormatter: (value) =>
-                      value == null ? 'NaN' : value.toString(),
+                      value == null ? "NaN" : value.toString(),
                   },
                   {
                     data: [null, null, null, null, 5.5, 2, 8.5, 1.5, 5],
@@ -553,7 +583,7 @@ function TableCellViewer() {
                   {
                     data: [7, 8, 5, 4, null, null, 2, 5.5, 1],
                     valueFormatter: (value) =>
-                      value == null ? '?' : value.toString(),
+                      value == null ? "?" : value.toString(),
                   },
                 ]}
                 height={200}
@@ -563,7 +593,7 @@ function TableCellViewer() {
               <Separator />
               <div className="grid gap-2">
                 <div className="flex gap-2 leading-none font-medium">
-                  Trending up by 5.2% this month{' '}
+                  Trending up by 5.2% this month{" "}
                   <IconTrendingUp className="size-4" />
                 </div>
                 <div className="text-muted-foreground">
@@ -656,5 +686,5 @@ function TableCellViewer() {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
