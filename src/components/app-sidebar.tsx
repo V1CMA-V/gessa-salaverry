@@ -1,32 +1,32 @@
-"use client";
+"use client"
 
-import { IconDashboard, IconListDetails } from "@tabler/icons-react";
-import * as React from "react";
+import { IconDashboard } from "@tabler/icons-react"
+import * as React from "react"
 
-import { NavMain } from "@/components/nav-main";
+import { NavMain } from "@/components/nav-main"
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+  SidebarMenuItem
+} from "@/components/ui/sidebar"
 
 const data = {
   navMain: [
     {
       title: "Dashboard",
       url: "/dashboard",
-      icon: IconDashboard,
-    },
-    {
-      title: "Muestreo",
-      url: "/muestreo",
-      icon: IconListDetails,
-    },
-  ],
-};
+      icon: IconDashboard
+    }
+    // {
+    //   title: "Muestreo",
+    //   url: "/muestreo",
+    //   icon: IconListDetails,
+    // },
+  ]
+}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -34,14 +34,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
+            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="#">
-                <span className="text-base font-semibold">
-                  Gessa Salaverry.
-                </span>
+                <span className="text-base font-semibold">Gessa Salaverry.</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -51,5 +46,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
     </Sidebar>
-  );
+  )
 }
