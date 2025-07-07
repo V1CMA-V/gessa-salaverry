@@ -43,8 +43,10 @@ export default async function LiberationParams({
         <h2 className="text-5xl font-bold text-center mb-8">Muestreo de Liberación</h2>
 
         <Accordion type="single" collapsible className="w-full">
+          {/* Parametros de Liberacion */}
           <ViewParams className="text-2xl" parametros={parametrosLiberacion} title="Parámetros de Liberación" />
 
+          {/* Parametros Aceptables */}
           <AccordionItem value="item-2">
             <AccordionTrigger className="cursor-pointer">
               <h2 className="text-2xl font-bold">Parámetros Aceptables</h2>
@@ -54,6 +56,7 @@ export default async function LiberationParams({
             </AccordionContent>
           </AccordionItem>
 
+          {/* Detalles */}
           <AccordionItem value="item-3">
             <AccordionTrigger className="cursor-pointer">
               <h2 className="text-2xl font-bold">Detalles</h2>

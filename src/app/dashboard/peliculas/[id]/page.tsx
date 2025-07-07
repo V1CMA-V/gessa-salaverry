@@ -42,8 +42,8 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
     <SidebarInset>
       <SiteHeader route={`Muestreo de Pelicula ${peliculaData?.fecha}`} />
       <div className="flex flex-col items-center gap-10 px-8 py-8">
-        <div className="flex md:flex-row  flex-col items-center gap-2 justify-between w-full max-w-xl">
-          <h2 className="text-2xl font-bold">Informacion General</h2>
+        <div className="flex md:flex-row flex-col items-center gap-8 justify-between w-full max-w-xl">
+          <h2 className="text-5xl font-bold text-center">Informacion General</h2>
           <Link href={`/dashboard/peliculas/${id}/muestreo`}>
             <Button variant="outline" className="cursor-pointer">
               <Table className="mr-2 h-4 w-4" /> Ver Muestreo
@@ -52,7 +52,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
         </div>
         <Separator className="w-full" />
         <div className="flex md:flex-row items-center justify-between flex-col gap-4 w-full md:max-w-5xl">
-          <div className="flex flex-col gap-2 p-4">
+          <div className="flex flex-col gap-2 p-4 w-full">
             <p className="text-muted-foreground">
               Cliente: <strong>{peliculaData?.cliente}</strong>
             </p>
@@ -72,7 +72,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
           <Separator className="w-full  md:hidden" />
           <Separator orientation="vertical" className=" hidden md:block" />
 
-          <div className="flex flex-col gap-2 p-4 ">
+          <div className="flex flex-col gap-2 p-4 w-full">
             <p className="text-muted-foreground">
               Codigo de Formulacion: <strong>{peliculaData?.codigo_formulacion}</strong>
             </p>
