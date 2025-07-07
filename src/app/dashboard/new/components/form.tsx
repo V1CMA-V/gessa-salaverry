@@ -83,7 +83,6 @@ export default function NewForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // TODO: Crear logica a base de datos
     const supabase = await createClient()
 
     const { data: lote, error } = await supabase
