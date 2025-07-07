@@ -43,17 +43,15 @@ export default async function MuestreoPage({
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-2">
             <div className="flex flex-col gap-2">
+              <p className="text-muted-foreground">Lote: {data?.lote?.num}</p>
               <p className="text-muted-foreground">
-                Lote: {pelicula?.lote?.num}
+                Peso Objetivo: {data?.lote?.peso_objetivo}
               </p>
               <p className="text-muted-foreground">
-                Peso Objetivo: {pelicula?.lote?.peso_objetivo}
+                Peso Rollo: {data?.lote?.peso_rollo}
               </p>
               <p className="text-muted-foreground">
-                Peso Rollo: {pelicula?.lote?.peso_rollo}
-              </p>
-              <p className="text-muted-foreground">
-                Configuracion: {pelicula?.configuracion}
+                Configuracion: {data?.configuracion}
               </p>
             </div>
           </CardContent>
@@ -62,9 +60,9 @@ export default async function MuestreoPage({
         <Separator className="w-full" />
 
         <MuestreoTables
-          category={pelicula?.configuracion}
-          peso_objetivo={pelicula?.lote?.peso_objetivo}
-          peso_rollo={pelicula?.lote?.peso_rollo}
+          category={data?.configuracion}
+          peso_objetivo={data?.lote?.peso_objetivo}
+          peso_rollo={data?.lote?.peso_rollo}
         />
       </div>
     </SidebarInset>
