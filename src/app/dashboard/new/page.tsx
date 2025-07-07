@@ -1,7 +1,12 @@
-import { SiteHeader } from "@/components/site-header";
-import { SidebarInset } from "@/components/ui/sidebar";
+import { SiteHeader } from "@/components/site-header"
+import { SidebarInset } from "@/components/ui/sidebar"
 
-import NewForm from "./components/form";
+import NewForm from "./components/form"
+
+export const metadata = {
+  title: "Crear nueva película",
+  description: "Crear nueva película"
+}
 
 export default function NewData() {
   return (
@@ -13,5 +18,5 @@ export default function NewData() {
         <NewForm />
       </div>
     </SidebarInset>
-  );
+  )
 }
