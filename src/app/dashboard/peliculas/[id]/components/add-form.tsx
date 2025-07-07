@@ -1,65 +1,59 @@
-'use client'
+"use client"
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-import { createClient } from '@/app/utils/supabase/client'
-import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { createClient } from "@/app/utils/supabase/client"
+import { Button } from "@/components/ui/button"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
 
 const formSchema = z.object({
   valor1: z.number({
-    required_error: 'Tiene que ser un número',
+    required_error: "Tiene que ser un número"
   }),
   valor2: z.number({
-    required_error: 'Tiene que ser un número',
+    required_error: "Tiene que ser un número"
   }),
   valor3: z.number({
-    required_error: 'Tiene que ser un número',
+    required_error: "Tiene que ser un número"
   }),
   valor4: z.number({
-    required_error: 'Tiene que ser un número',
+    required_error: "Tiene que ser un número"
   }),
   valor5: z.number({
-    required_error: 'Tiene que ser un número',
+    required_error: "Tiene que ser un número"
   }),
   valor6: z.number({
-    required_error: 'Tiene que ser un número',
+    required_error: "Tiene que ser un número"
   }),
   valor7: z.number({
-    required_error: 'Tiene que ser un número',
+    required_error: "Tiene que ser un número"
   }),
   valor8: z.number({
-    required_error: 'Tiene que ser un número',
+    required_error: "Tiene que ser un número"
   }),
 
   // datos
   position: z
     .number({
-      required_error: 'Tiene que ser un número',
+      required_error: "Tiene que ser un número"
     })
     .min(1, {
-      message: 'La posición debe ser al menos 1',
+      message: "La posición debe ser al menos 1"
     })
     .max(10, {
-      message: 'La posición no puede ser mayor que 10',
-    }),
+      message: "La posición no puede ser mayor que 10"
+    })
 })
 
 export default function FormData({ id }: { id: string }) {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {}
   })
 
   // 2. Define a submit handler.
@@ -67,27 +61,27 @@ export default function FormData({ id }: { id: string }) {
     const supabase = await createClient()
 
     const { error: insertError } = await supabase
-      .from('valores')
+      .from("valores")
       .update({
-        ...values,
+        ...values
       })
-      .eq('parametro_id', id)
-      .eq('position', values.position)
+      .eq("parametro_id", id)
+      .eq("position", values.position)
 
     if (insertError) {
-      console.error('Error inserting valores:', insertError)
+      console.error("Error inserting valores:", insertError)
+      toast.error("Error inserting valores")
       return
     }
 
     // Reset the form after successful submission
+    form.reset()
+    toast.success("Valores actualizados correctamente")
   }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-8 md:gap-16 items-center px-5"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 md:gap-16 items-center px-5">
         <div className="w-full grid grid-cols-2 gap-4 px-3">
           <FormField
             control={form.control}
@@ -101,7 +95,7 @@ export default function FormData({ id }: { id: string }) {
                     type="number"
                     placeholder="Valor 1"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={e => field.onChange(e.target.valueAsNumber)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -121,7 +115,7 @@ export default function FormData({ id }: { id: string }) {
                     type="number"
                     placeholder="Valor 2"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={e => field.onChange(e.target.valueAsNumber)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -140,7 +134,7 @@ export default function FormData({ id }: { id: string }) {
                     type="number"
                     placeholder="Valor 3"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={e => field.onChange(e.target.valueAsNumber)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -159,7 +153,7 @@ export default function FormData({ id }: { id: string }) {
                     type="number"
                     placeholder="Valor 4"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={e => field.onChange(e.target.valueAsNumber)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -178,7 +172,7 @@ export default function FormData({ id }: { id: string }) {
                     type="number"
                     placeholder="Valor 5"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={e => field.onChange(e.target.valueAsNumber)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -197,7 +191,7 @@ export default function FormData({ id }: { id: string }) {
                     type="number"
                     placeholder="Valor 6"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={e => field.onChange(e.target.valueAsNumber)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -217,7 +211,7 @@ export default function FormData({ id }: { id: string }) {
                     type="number"
                     placeholder="Valor 7"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={e => field.onChange(e.target.valueAsNumber)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -236,7 +230,7 @@ export default function FormData({ id }: { id: string }) {
                     type="number"
                     placeholder="Valor 8"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={e => field.onChange(e.target.valueAsNumber)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -257,7 +251,7 @@ export default function FormData({ id }: { id: string }) {
                   type="number"
                   placeholder="Posición"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
               <FormMessage />
@@ -265,7 +259,7 @@ export default function FormData({ id }: { id: string }) {
           )}
         />
 
-        <Button type="submit" className=" w-full">
+        <Button type="submit" className=" w-full cursor-pointer">
           Enviar
         </Button>
       </form>
