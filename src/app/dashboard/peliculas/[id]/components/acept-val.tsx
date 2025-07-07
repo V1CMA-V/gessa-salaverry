@@ -11,6 +11,7 @@ import { createClient } from "@/app/utils/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   electrostatico: z
@@ -89,6 +90,8 @@ const formSchema = z.object({
 
 export default function AceptVal({ valores, ID }: { valores: SchemaType | null; ID: string }) {
   // 1. Define your form.
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -118,7 +121,7 @@ export default function AceptVal({ valores, ID }: { valores: SchemaType | null; 
       return
     }
 
-    window.location.reload()
+    router.refresh()
   }
   async function update(values: z.infer<typeof formSchema>) {
     const supabase = await createClient()

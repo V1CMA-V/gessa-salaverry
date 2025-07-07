@@ -18,7 +18,7 @@ import { createClient } from "@/app/utils/supabase/client"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { es } from "date-fns/locale"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
 const formSchema = z.object({
@@ -73,6 +73,8 @@ const formSchema = z.object({
 })
 
 export default function NewForm() {
+  const router = useRouter()
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -120,7 +122,7 @@ export default function NewForm() {
     }
 
     toast.success("Película insertada correctamente")
-    redirect(`/dashboard/peliculas/${pelicula[0].id}`)
+    router.push(`/dashboard/peliculas/${pelicula[0].id}`)
   }
 
   return (

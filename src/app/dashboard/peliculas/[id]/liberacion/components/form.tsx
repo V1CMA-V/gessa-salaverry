@@ -8,7 +8,7 @@ import { createClient } from "@/app/utils/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   kilogramos: z.number().min(2, {
@@ -58,6 +58,8 @@ const formSchema = z.object({
 })
 
 export default function FormParameter({ pelicula_id }: { pelicula_id: string }) {
+  const router = useRouter()
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -78,7 +80,7 @@ export default function FormParameter({ pelicula_id }: { pelicula_id: string }) 
       return
     }
 
-    redirect(`/dashboard/peliculas/${pelicula_id}`)
+    router.push(`/dashboard/peliculas/${pelicula_id}`)
   }
 
   return (

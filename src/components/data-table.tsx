@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { LineChart } from "@mui/x-charts/LineChart";
+import { LineChart } from "@mui/x-charts/LineChart"
 
 import {
   closestCenter,
@@ -11,16 +11,11 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-  type UniqueIdentifier,
-} from "@dnd-kit/core";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+  type UniqueIdentifier
+} from "@dnd-kit/core"
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
+import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 import {
   IconChevronDown,
   IconChevronLeft,
@@ -31,8 +26,8 @@ import {
   IconGripVertical,
   IconLayoutColumns,
   IconPlus,
-  IconTrendingUp,
-} from "@tabler/icons-react";
+  IconTrendingUp
+} from "@tabler/icons-react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -46,15 +41,15 @@ import {
   Row,
   SortingState,
   useReactTable,
-  VisibilityState,
-} from "@tanstack/react-table";
-import * as React from "react";
+  VisibilityState
+} from "@tanstack/react-table"
+import * as React from "react"
 
-import { Database } from "@/app/types/database";
-import { createClient } from "@/app/utils/supabase/client";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Database } from "@/app/types/database"
+import { createClient } from "@/app/utils/supabase/client"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Drawer,
   DrawerClose,
@@ -63,44 +58,31 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+  DrawerTrigger
+} from "@/components/ui/drawer"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { useIsMobile } from "@/hooks/use-mobile";
-import Link from "next/link";
-import { toast } from "sonner";
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
+import { useIsMobile } from "@/hooks/use-mobile"
+import Link from "next/link"
+import { toast } from "sonner"
 
-type SchemaType = Database["public"]["Tables"]["peliculas"]["Row"];
+type SchemaType = Database["public"]["Tables"]["peliculas"]["Row"]
 // Create a separate component for the drag handle
 function DragHandle({ id }: { id: string }) {
   const { attributes, listeners } = useSortable({
-    id,
-  });
+    id
+  })
 
   return (
     <Button
@@ -113,25 +95,22 @@ function DragHandle({ id }: { id: string }) {
       <IconGripVertical className="text-muted-foreground size-3" />
       <span className="sr-only">Arrastrar para reordenar</span>
     </Button>
-  );
+  )
 }
 
 const columns: ColumnDef<SchemaType>[] = [
   {
     id: "drag",
     header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
+    cell: ({ row }) => <DragHandle id={row.original.id} />
   },
   {
     id: "select",
     header: ({ table }) => (
       <div className="flex items-center justify-center">
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
         />
       </div>
@@ -140,13 +119,13 @@ const columns: ColumnDef<SchemaType>[] = [
       <div className="flex items-center justify-center">
         <Checkbox
           checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          onCheckedChange={value => row.toggleSelected(!!value)}
           aria-label="Select row"
         />
       </div>
     ),
     enableSorting: false,
-    enableHiding: false,
+    enableHiding: false
   },
   {
     accessorKey: "fecha",
@@ -160,9 +139,9 @@ const columns: ColumnDef<SchemaType>[] = [
             </Badge>
           </div>
         </Link>
-      );
+      )
     },
-    enableHiding: false,
+    enableHiding: false
   },
   {
     accessorKey: "configuracion",
@@ -173,7 +152,7 @@ const columns: ColumnDef<SchemaType>[] = [
           {row.original.configuracion}
         </Badge>
       </div>
-    ),
+    )
   },
   {
     accessorKey: "calibre",
@@ -184,34 +163,26 @@ const columns: ColumnDef<SchemaType>[] = [
           {row.original.calibre}
         </Badge>
       </div>
-    ),
+    )
   },
   {
     accessorKey: "codigo",
-    header: () => (
-      <div className="w-full text-center">Codigo de Formulacion</div>
-    ),
-    cell: ({ row }) => (
-      <p className="text-center">{row.original.codigo_formulacion}</p>
-    ),
+    header: () => <div className="w-full text-center">Codigo de Formulacion</div>,
+    cell: ({ row }) => <p className="text-center">{row.original.codigo_formulacion}</p>
   },
   {
     accessorKey: "caracteristicas",
     header: "Caracteristicas",
     cell: ({ row }) => {
-      return <p className="text-left">{row.original.caracteristicas}</p>;
-    },
+      return <p className="text-left">{row.original.caracteristicas}</p>
+    }
   },
   {
     id: "actions",
     cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-          >
+          <Button variant="ghost" className="data-[state=open]:bg-muted text-muted-foreground flex size-8" size="icon">
             <IconDotsVertical />
             <span className="sr-only">Abrir Menu</span>
           </Button>
@@ -228,36 +199,33 @@ const columns: ColumnDef<SchemaType>[] = [
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    ),
-  },
-];
+    )
+  }
+]
 
 async function deletePelicula(id: string, lote: string) {
-  const supabase = await createClient();
-  const { error } = await supabase.from("peliculas").delete().eq("id", id);
+  const supabase = await createClient()
+  const { error } = await supabase.from("peliculas").delete().eq("id", id)
   if (error) {
-    console.error("Error deleting pelicula:", error);
-    return;
+    console.error("Error deleting pelicula:", error)
+    return
   }
 
-  const { error: errorLote } = await supabase
-    .from("lote")
-    .delete()
-    .eq("id", lote);
+  const { error: errorLote } = await supabase.from("lote").delete().eq("id", lote)
 
   if (errorLote) {
-    console.error("Error deleting lote:", errorLote);
-    return;
+    console.error("Error deleting lote:", errorLote)
+    return
   }
 
-  toast.success("Película eliminada correctamente");
-  window.location.reload();
+  toast.success("Película eliminada correctamente")
+  window.location.reload()
 }
 
 function DraggableRow({ row }: { row: Row<SchemaType> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
-    id: row.original.id,
-  });
+    id: row.original.id
+  })
 
   return (
     <TableRow
@@ -267,42 +235,30 @@ function DraggableRow({ row }: { row: Row<SchemaType> }) {
       className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
       style={{
         transform: CSS.Transform.toString(transform),
-        transition: transition,
+        transition: transition
       }}
     >
-      {row.getVisibleCells().map((cell) => (
-        <TableCell key={cell.id}>
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-        </TableCell>
+      {row.getVisibleCells().map(cell => (
+        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
       ))}
     </TableRow>
-  );
+  )
 }
 
 export function DataTable({ data: initialData }: { data: SchemaType[] }) {
-  const [data, setData] = React.useState(() => initialData);
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [data, setData] = React.useState(() => initialData)
+  const [rowSelection, setRowSelection] = React.useState({})
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([])
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
-    pageSize: 10,
-  });
-  const sortableId = React.useId();
-  const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
-  );
+    pageSize: 10
+  })
+  const sortableId = React.useId()
+  const sensors = useSensors(useSensor(MouseSensor, {}), useSensor(TouchSensor, {}), useSensor(KeyboardSensor, {}))
 
-  const dataIds = React.useMemo<UniqueIdentifier[]>(
-    () => data?.map(({ id }) => id) || [],
-    [data]
-  );
+  const dataIds = React.useMemo<UniqueIdentifier[]>(() => data?.map(({ id }) => id) || [], [data])
 
   const table = useReactTable({
     data,
@@ -312,9 +268,9 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
       columnVisibility,
       rowSelection,
       columnFilters,
-      pagination,
+      pagination
     },
-    getRowId: (row) => row.id.toString(),
+    getRowId: row => row.id.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -326,25 +282,22 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
+    getFacetedUniqueValues: getFacetedUniqueValues()
+  })
 
   function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
+    const { active, over } = event
     if (active && over && active.id !== over.id) {
-      setData((data) => {
-        const oldIndex = dataIds.indexOf(active.id);
-        const newIndex = dataIds.indexOf(over.id);
-        return arrayMove(data, oldIndex, newIndex);
-      });
+      setData(data => {
+        const oldIndex = dataIds.indexOf(active.id)
+        const newIndex = dataIds.indexOf(over.id)
+        return arrayMove(data, oldIndex, newIndex)
+      })
     }
   }
 
   return (
-    <Tabs
-      defaultValue="outline"
-      className="w-full flex-col justify-start gap-6"
-    >
+    <Tabs defaultValue="outline" className="w-full flex-col justify-start gap-6">
       <div className="flex items-center justify-between px-4 lg:px-6">
         <div className="flex items-center gap-2">
           <DropdownMenu>
@@ -359,24 +312,18 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
             <DropdownMenuContent align="end" className="w-56">
               {table
                 .getAllColumns()
-                .filter(
-                  (column) =>
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide()
-                )
-                .map((column) => {
+                .filter(column => typeof column.accessorFn !== "undefined" && column.getCanHide())
+                .map(column => {
                   return (
                     <DropdownMenuCheckboxItem
                       key={column.id}
                       className="capitalize"
                       checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
+                      onCheckedChange={value => column.toggleVisibility(!!value)}
                     >
                       {column.id}
                     </DropdownMenuCheckboxItem>
-                  );
+                  )
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -388,10 +335,7 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
           </Link>
         </div>
       </div>
-      <TabsContent
-        value="outline"
-        className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
-      >
+      <TabsContent value="outline" className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
         <div className="overflow-hidden rounded-lg border">
           <DndContext
             collisionDetection={closestCenter}
@@ -402,39 +346,30 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
           >
             <Table>
               <TableHeader className="bg-muted sticky top-0 z-10">
-                {table.getHeaderGroups().map((headerGroup) => (
+                {table.getHeaderGroups().map(headerGroup => (
                   <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
+                    {headerGroup.headers.map(header => {
                       return (
                         <TableHead key={header.id} colSpan={header.colSpan}>
                           {header.isPlaceholder
                             ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+                            : flexRender(header.column.columnDef.header, header.getContext())}
                         </TableHead>
-                      );
+                      )
                     })}
                   </TableRow>
                 ))}
               </TableHeader>
               <TableBody className="**:data-[slot=table-cell]:first:w-8">
                 {table.getRowModel().rows?.length ? (
-                  <SortableContext
-                    items={dataIds}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    {table.getRowModel().rows.map((row) => (
+                  <SortableContext items={dataIds} strategy={verticalListSortingStrategy}>
+                    {table.getRowModel().rows.map(row => (
                       <DraggableRow key={row.id} row={row} />
                     ))}
                   </SortableContext>
                 ) : (
                   <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
+                    <TableCell colSpan={columns.length} className="h-24 text-center">
                       No results.
                     </TableCell>
                   </TableRow>
@@ -445,8 +380,8 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
         </div>
         <div className="flex items-center justify-between px-4">
           <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
-            {table.getFilteredSelectedRowModel().rows.length} de{" "}
-            {table.getFilteredRowModel().rows.length} fila(s) seleccionada(s).
+            {table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length} fila(s)
+            seleccionada(s).
           </div>
           <div className="flex w-full items-center gap-8 lg:w-fit">
             <div className="hidden items-center gap-2 lg:flex">
@@ -455,17 +390,15 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
               </Label>
               <Select
                 value={`${table.getState().pagination.pageSize}`}
-                onValueChange={(value) => {
-                  table.setPageSize(Number(value));
+                onValueChange={value => {
+                  table.setPageSize(Number(value))
                 }}
               >
                 <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                  <SelectValue
-                    placeholder={table.getState().pagination.pageSize}
-                  />
+                  <SelectValue placeholder={table.getState().pagination.pageSize} />
                 </SelectTrigger>
                 <SelectContent side="top">
-                  {[10, 20, 30, 40, 50].map((pageSize) => (
+                  {[10, 20, 30, 40, 50].map(pageSize => (
                     <SelectItem key={pageSize} value={`${pageSize}`}>
                       {pageSize}
                     </SelectItem>
@@ -474,8 +407,7 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
               </Select>
             </div>
             <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Pagina {table.getState().pagination.pageIndex + 1} de{" "}
-              {table.getPageCount()}
+              Pagina {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
             </div>
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
               <Button
@@ -521,27 +453,21 @@ export function DataTable({ data: initialData }: { data: SchemaType[] }) {
           </div>
         </div>
       </TabsContent>
-      <TabsContent
-        value="past-performance"
-        className="flex flex-col px-4 lg:px-6"
-      >
+      <TabsContent value="past-performance" className="flex flex-col px-4 lg:px-6">
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
       <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
-      <TabsContent
-        value="focus-documents"
-        className="flex flex-col px-4 lg:px-6"
-      >
+      <TabsContent value="focus-documents" className="flex flex-col px-4 lg:px-6">
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
     </Tabs>
-  );
+  )
 }
 
 function TableCellViewer() {
-  const isMobile = useIsMobile();
+  const isMobile = useIsMobile()
 
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
@@ -553,9 +479,7 @@ function TableCellViewer() {
       <DrawerContent>
         <DrawerHeader className="gap-1">
           <DrawerTitle>Hola</DrawerTitle>
-          <DrawerDescription>
-            Showing total visitors for the last 6 months
-          </DrawerDescription>
+          <DrawerDescription>Showing total visitors for the last 6 months</DrawerDescription>
         </DrawerHeader>
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           {!isMobile && (
@@ -565,17 +489,15 @@ function TableCellViewer() {
                 series={[
                   {
                     data: [2, 5.5, 2, 8.5, 1.5, 5],
-                    valueFormatter: (value) =>
-                      value == null ? "NaN" : value.toString(),
+                    valueFormatter: value => (value == null ? "NaN" : value.toString())
                   },
                   {
-                    data: [null, null, null, null, 5.5, 2, 8.5, 1.5, 5],
+                    data: [null, null, null, null, 5.5, 2, 8.5, 1.5, 5]
                   },
                   {
                     data: [7, 8, 5, 4, null, null, 2, 5.5, 1],
-                    valueFormatter: (value) =>
-                      value == null ? "?" : value.toString(),
-                  },
+                    valueFormatter: value => (value == null ? "?" : value.toString())
+                  }
                 ]}
                 height={200}
                 margin={{ bottom: 10 }}
@@ -584,13 +506,11 @@ function TableCellViewer() {
               <Separator />
               <div className="grid gap-2">
                 <div className="flex gap-2 leading-none font-medium">
-                  Trending up by 5.2% this month{" "}
-                  <IconTrendingUp className="size-4" />
+                  Trending up by 5.2% this month <IconTrendingUp className="size-4" />
                 </div>
                 <div className="text-muted-foreground">
-                  Showing total visitors for the last 6 months. This is just
-                  some random text to test the layout. It spans multiple lines
-                  and should wrap around.
+                  Showing total visitors for the last 6 months. This is just some random text to test the layout. It
+                  spans multiple lines and should wrap around.
                 </div>
               </div>
               <Separator />
@@ -677,5 +597,5 @@ function TableCellViewer() {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  );
+  )
 }
