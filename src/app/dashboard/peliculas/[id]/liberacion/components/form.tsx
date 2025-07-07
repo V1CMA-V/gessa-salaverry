@@ -1,92 +1,80 @@
-'use client'
+"use client"
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-import { createClient } from '@/app/utils/supabase/client'
-import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { redirect } from 'next/navigation'
+import { createClient } from "@/app/utils/supabase/client"
+import { Button } from "@/components/ui/button"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { redirect } from "next/navigation"
 
 const formSchema = z.object({
   kilogramos: z.number().min(2, {
-    message: 'kilogramos debe ser un número y tener al menos 2',
+    message: "kilogramos debe ser un número y tener al menos 2"
   }),
   velocidad_motor_A: z.number().min(2, {
-    message: 'velocidad_motor_A debe ser un número y tener al menos 2',
+    message: "velocidad_motor_A debe ser un número y tener al menos 2"
   }),
   velocidad_motor_B: z.number().min(2, {
-    message: 'velocidad_motor_B debe ser un número y tener al menos 2',
+    message: "velocidad_motor_B debe ser un número y tener al menos 2"
   }),
   velocidad_motor_C: z.number().min(2, {
-    message: 'velocidad_motor_C debe ser un número y tener al menos 2',
+    message: "velocidad_motor_C debe ser un número y tener al menos 2"
   }),
   velocidad_turbo: z.number().min(2, {
-    message: 'velocidad_turbo debe ser un número y tener al menos 2',
+    message: "velocidad_turbo debe ser un número y tener al menos 2"
   }),
   velocidad_jalador: z.number().min(2, {
-    message: 'velocidad_jalador debe ser un número y tener al menos 2',
+    message: "velocidad_jalador debe ser un número y tener al menos 2"
   }),
   tension_bobinador_1: z.number().min(2, {
-    message: 'tension_bobinador_1 debe ser un número y tener al menos 2',
+    message: "tension_bobinador_1 debe ser un número y tener al menos 2"
   }),
   tension_bobinador_2: z.number().min(2, {
-    message: 'tension_bobinador_2 debe ser un número y tener al menos 2',
+    message: "tension_bobinador_2 debe ser un número y tener al menos 2"
   }),
   prearrastre: z.number().min(2, {
-    message: 'prearrastre debe ser un número y tener al menos 2',
+    message: "prearrastre debe ser un número y tener al menos 2"
   }),
   presion_bobinador_I: z.number().min(2, {
-    message: 'presion_bobinador_I debe ser un número y tener al menos 2',
+    message: "presion_bobinador_I debe ser un número y tener al menos 2"
   }),
   presion_bobinador_D: z.number().min(2, {
-    message: 'presion_bobinador_D debe ser un número y tener al menos 2',
+    message: "presion_bobinador_D debe ser un número y tener al menos 2"
   }),
   temperaturas_canions: z.object({
     a: z.number().min(2, {
-      message: 'Temperatura A debe ser un número y tener al menos 2',
+      message: "Temperatura A debe ser un número y tener al menos 2"
     }),
     b: z.number().min(2, {
-      message: 'Temperatura B debe ser un número y tener al menos 2',
+      message: "Temperatura B debe ser un número y tener al menos 2"
     }),
     c: z.number().min(2, {
-      message: 'Temperatura C debe ser un número y tener al menos 2',
-    }),
-  }),
+      message: "Temperatura C debe ser un número y tener al menos 2"
+    })
+  })
 })
 
-export default function FormParameter({
-  pelicula_id,
-}: {
-  pelicula_id: string
-}) {
+export default function FormParameter({ pelicula_id }: { pelicula_id: string }) {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {}
   })
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const supabase = await createClient()
 
-    const { error } = await supabase.from('parametros').insert({
+    const { error } = await supabase.from("parametros").insert({
       pelicula_id,
-      ...values,
+      ...values
     })
 
     if (error) {
-      console.error('Error inserting parameters:', error)
+      console.error("Error inserting parameters:", error)
       return
     }
 
@@ -110,12 +98,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Kilogramos"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es el peso en kilogramos hora.
-              </FormDescription>
+              <FormDescription>Este es el peso en kilogramos hora.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -132,12 +118,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Velocidad Motor A"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es la velocidad de la motor A.
-              </FormDescription>
+              <FormDescription>Este es la velocidad de la motor A.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -153,12 +137,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Velocidad Motor B"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es la velocidad de la motor B.
-              </FormDescription>
+              <FormDescription>Este es la velocidad de la motor B.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -174,12 +156,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Velocidad Motor C"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es la velocidad de la motor C.
-              </FormDescription>
+              <FormDescription>Este es la velocidad de la motor C.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -195,7 +175,7 @@ export default function FormParameter({
                   type="number"
                   placeholder="Velocidad Turbo"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
               <FormDescription>Este es la velocidad del turbo.</FormDescription>
@@ -214,12 +194,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Velocidad Jalador"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es la velocidad del jalador.
-              </FormDescription>
+              <FormDescription>Este es la velocidad del jalador.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -236,12 +214,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Tensión Bobinador 1"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es la tensión del bobinador 1.
-              </FormDescription>
+              <FormDescription>Este es la tensión del bobinador 1.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -257,12 +233,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Tensión Bobinador 2"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es la tensión del bobinador 2.
-              </FormDescription>
+              <FormDescription>Este es la tensión del bobinador 2.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -279,7 +253,7 @@ export default function FormParameter({
                   type="number"
                   placeholder="Prearrastre"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
               <FormDescription>Este es el prearrastre.</FormDescription>
@@ -299,12 +273,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Presión Bobinador Izquierdo"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es la presión del bobinador izquierdo.
-              </FormDescription>
+              <FormDescription>Este es la presión del bobinador izquierdo.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -321,12 +293,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Presión Bobinador Derecho"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es la presión del bobinador derecho.
-              </FormDescription>
+              <FormDescription>Este es la presión del bobinador derecho.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -343,12 +313,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Temperatura A"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es el valor de la temperatura A.
-              </FormDescription>
+              <FormDescription>Este es el valor de la temperatura A.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -365,12 +333,10 @@ export default function FormParameter({
                   type="number"
                   placeholder="Temperatura B"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es el valor de la temperatura B.
-              </FormDescription>
+              <FormDescription>Este es el valor de la temperatura B.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -387,17 +353,15 @@ export default function FormParameter({
                   type="number"
                   placeholder="Temperatura C"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
-              <FormDescription>
-                Este es el valor de la temperatura C.
-              </FormDescription>
+              <FormDescription>Este es el valor de la temperatura C.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="md:col-span-2 lg:col-span-3">
+        <Button type="submit" className="md:col-span-2 lg:col-span-3 cursor-pointer">
           Submit
         </Button>
       </form>
