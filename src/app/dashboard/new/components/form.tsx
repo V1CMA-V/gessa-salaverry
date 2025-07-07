@@ -327,7 +327,7 @@ export default function NewForm() {
           )}
         />
 
-        <Separator />
+        <Separator className="md:hidden" />
 
         <FormField
           control={form.control}

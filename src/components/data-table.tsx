@@ -149,7 +149,7 @@ const columns: ColumnDef<SchemaType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "header",
+    accessorKey: "fecha",
     header: "Fecha de Creación",
     cell: ({ row }) => {
       return (
@@ -165,27 +165,18 @@ const columns: ColumnDef<SchemaType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "type",
-    header: "Lote",
+    accessorKey: "configuracion",
+    header: "Configuracion",
     cell: ({ row }) => (
       <div className="w-32">
         <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.lote}
+          {row.original.configuracion}
         </Badge>
       </div>
     ),
   },
   {
-    accessorKey: "status",
-    header: "Configuracion",
-    cell: ({ row }) => (
-      <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {row.original.configuracion}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: "target",
+    accessorKey: "calibre",
     header: () => <div className="w-full text-center">Calibre</div>,
     cell: ({ row }) => (
       <div className=" items-center justify-center flex ">
