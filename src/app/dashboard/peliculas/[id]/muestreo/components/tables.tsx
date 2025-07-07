@@ -6,10 +6,6 @@ const categories = {
   Quintuple: 10,
 };
 
-function divisionSinResiduo(dividendo: number, divisor: number) {
-  return Math.floor(dividendo / divisor);
-}
-
 export default function MuestreoTables({
   peso_objetivo,
   peso_rollo,
