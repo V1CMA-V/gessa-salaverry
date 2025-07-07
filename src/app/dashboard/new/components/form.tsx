@@ -129,7 +129,7 @@ export default function NewForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16 items-center"
+        className="flex flex-col gap-8 md:grid md:grid-cols-3 md:gap-10 items-center justify-center "
       >
         <FormField
           control={form.control}
@@ -245,6 +245,7 @@ export default function NewForm() {
                   <SelectItem value="Tratado">Tratado</SelectItem>
                 </SelectContent>
               </Select>
+              <FormDescription>Características de la película</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -259,6 +260,7 @@ export default function NewForm() {
                 <Input
                   type="text"
                   placeholder="Codigo de Formulación"
+                  className="w-full"
                   {...field}
                   onChange={e => field.onChange(e.target.value)}
                 />
@@ -272,11 +274,11 @@ export default function NewForm() {
           control={form.control}
           name="configuracion"
           render={({ field }) => (
-            <FormItem className="col-span-1 md:col-span-3 w-full flex flex-col items-center justify-center">
+            <FormItem className=" md:col-span-3 w-full flex flex-col items-center justify-center">
               <FormLabel>Configuración de Rollos por flecha</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-1/2">
+                  <SelectTrigger className="md:w-1/2 w-full">
                     <SelectValue placeholder="Selecciona una configuración" />
                   </SelectTrigger>
                 </FormControl>
@@ -288,6 +290,7 @@ export default function NewForm() {
                   <SelectItem value="Quintuple">Quintuple</SelectItem>
                 </SelectContent>
               </Select>
+              <FormDescription>Configuración de rollos por flecha</FormDescription>
               <FormMessage />
             </FormItem>
           )}
