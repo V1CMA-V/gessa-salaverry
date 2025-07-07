@@ -140,9 +140,15 @@ export default async function Table({ page_id }: { page_id: string }) {
           <div className="flex w-full flex-col gap-6">
             <Tabs defaultValue="lines">
               <TabsList>
-                <TabsTrigger value="lines">Lineas</TabsTrigger>
-                <TabsTrigger value="scatter">Puntos</TabsTrigger>
-                <TabsTrigger value="bars">Barras</TabsTrigger>
+                <TabsTrigger value="lines" className="cursor-pointer">
+                  Lineas
+                </TabsTrigger>
+                <TabsTrigger value="scatter" className="cursor-pointer">
+                  Puntos
+                </TabsTrigger>
+                <TabsTrigger value="bars" className="cursor-pointer">
+                  Barras
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="lines">
                 <LineGraf series={transformedData} />
