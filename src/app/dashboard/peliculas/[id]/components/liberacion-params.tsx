@@ -5,6 +5,7 @@ type SchemaType = Database["public"]["Tables"]["parametros"]["Row"]
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import DetailsForm from "./details"
+import Resultados from "./resultados"
 import Table from "./tabla"
 import ViewParams from "./view-params"
 
@@ -63,6 +64,16 @@ export default async function LiberationParams({
             </AccordionTrigger>
             <AccordionContent>
               <DetailsForm ID={parametrosLiberacion.id} team={team[0]} />
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* Resultados */}
+          <AccordionItem value="item-4">
+            <AccordionTrigger className="cursor-pointer">
+              <h2 className="text-2xl font-bold">Resultados</h2>
+            </AccordionTrigger>
+            <AccordionContent>
+              <Resultados parametroId={parametrosLiberacion.id} />
             </AccordionContent>
           </AccordionItem>
         </Accordion>
