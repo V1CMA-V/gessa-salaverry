@@ -69,7 +69,6 @@ export default function Resultados({ parametroId }: ResultadosProps) {
         }
 
         if (data) {
-          console.log("Fetched resultados:", data)
           setResultado(data)
         }
       } catch (error) {
