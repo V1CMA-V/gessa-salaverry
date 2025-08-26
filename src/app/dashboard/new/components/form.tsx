@@ -291,6 +291,7 @@ export default function NewForm() {
                   <SelectItem value="Triple">Triple</SelectItem>
                   <SelectItem value="Cuadruple">Cuadruple</SelectItem>
                   <SelectItem value="Quintuple">Quintuple</SelectItem>
+                  <SelectItem value="Sextuple">Sextuple</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>Configuración de rollos por flecha</FormDescription>
