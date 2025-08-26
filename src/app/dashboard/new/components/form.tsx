@@ -45,6 +45,9 @@ const formSchema = z.object({
   configuracion: z.string({
     message: "Es necesario ingresar la configuración"
   }),
+  codigo_articulo: z.string({
+    message: "Es necesario ingresar el código del artículo"
+  }),
   fecha: z.date({
     message: "Es necesario ingresar la fecha"
   }),
@@ -110,6 +113,7 @@ export default function NewForm() {
         caracteristicas: values.caracteristicas,
         codigo_formulacion: values.codigo_formulacion,
         configuracion: values.configuracion,
+        codigo_articulo: values.codigo_articulo,
         lote: lote[0].id
       })
       .select()
@@ -273,11 +277,11 @@ export default function NewForm() {
           control={form.control}
           name="configuracion"
           render={({ field }) => (
-            <FormItem className=" md:col-span-3 w-full flex flex-col items-center justify-center">
+            <FormItem className=" md:col-span-2 w-full flex flex-col items-center justify-center">
               <FormLabel>Configuración de Rollos por flecha</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="md:w-1/2 w-full">
+                  <SelectTrigger className="md:w-full w-full">
                     <SelectValue placeholder="Selecciona una configuración" />
                   </SelectTrigger>
                 </FormControl>
@@ -290,6 +294,25 @@ export default function NewForm() {
                 </SelectContent>
               </Select>
               <FormDescription>Configuración de rollos por flecha</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="codigo_articulo"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Código del Artículo</FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder="Código del Artículo"
+                  {...field}
+                  onChange={e => field.onChange(e.target.value)}
+                />
+              </FormControl>
+              <FormDescription>Escribe el código del artículo</FormDescription>
               <FormMessage />
             </FormItem>
           )}

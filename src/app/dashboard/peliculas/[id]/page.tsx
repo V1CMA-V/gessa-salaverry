@@ -5,8 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarInset } from "@/components/ui/sidebar"
 import { Table } from "lucide-react"
 import Link from "next/link"
-import LiberationParams from "./components/liberacion-params"
-import ValidationParam from "./components/validation"
+import Parameters from "./components/parameters"
 
 export const metadata = {
   title: "Muestreo de Pelicula",
@@ -35,8 +34,10 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
   }
 
   const peliculaData = pelicula?.[0]
-  const parametrosLiberacion = parametros?.[0]
-  const parametrosValidacion = parametros?.slice(1)
+
+  // Cambiar la lógica: el último parámetro es de liberación, el resto son de validación
+  const parametrosLiberacion = parametros && parametros.length > 0 ? parametros[parametros.length - 1] : null
+  const parametrosValidacion = parametros && parametros.length > 1 ? parametros.slice(0, -1) : []
 
   return (
     <SidebarInset>
@@ -80,40 +81,21 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               Lote: <strong>{peliculaData?.lote?.num}</strong>
             </p>
             <p className="text-muted-foreground">
+              Código del Artículo: <strong>{peliculaData?.codigo_articulo}</strong>
+            </p>
+            <p className="text-muted-foreground">
               Configuracion de Rollos por Flecha: <strong>{peliculaData?.configuracion}</strong>
             </p>
           </div>
         </div>
         <Separator className="w-full" />
 
-        {/* Parametros de Liberacion */}
-        {parametrosLiberacion ? (
-          <LiberationParams parametrosLiberacion={parametrosLiberacion} ID={id} />
-        ) : (
-          <div className="flex flex-col items-center gap-4 w-full p-4">
-            <p className="text-muted-foreground">No hay parametros de liberacion disponibles.</p>
-            <Link href={`/dashboard/peliculas/${id}/liberacion/crear`}>
-              <Button variant="outline" className="cursor-pointer">
-                Crear Parametros de Liberacion
-              </Button>
-            </Link>
-          </div>
-        )}
-
-        {/* Parametros de Validacion */}
-        {parametrosValidacion && parametrosValidacion.length > 0 ? (
-          <ValidationParam parametrosValidacion={parametrosValidacion} />
-        ) : (
-          <div className="flex flex-col items-center gap-4 w-full p-4">
-            <p className="text-muted-foreground">No hay parametros de validacion disponibles.</p>
-          </div>
-        )}
-
-        <Link href={`/dashboard/peliculas/${id}/liberacion/crear`}>
-          <Button variant="outline" className="cursor-pointer">
-            Crear Parametros de Validacion
-          </Button>
-        </Link>
+        <Parameters
+          parametros={parametros}
+          parametrosLiberacion={parametrosLiberacion}
+          parametrosValidacion={parametrosValidacion}
+          peliculaId={id}
+        />
       </div>
     </SidebarInset>
   )
