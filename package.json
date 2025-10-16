@@ -1,1 +1,16 @@
-{"name":"gessa-salaverry","version":"0.0.0","private":true,"scripts":{"dev":"next dev","build":"next build","start":"next start"},"dependencies":{}}
+{
+  "name": "gessa-salaverry",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {}
+  ,"devDependencies": {
+    "tailwindcss": "^3.5.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0"
+  }
+}
