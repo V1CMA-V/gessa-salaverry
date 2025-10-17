@@ -1,3 +1,4 @@
+import { PageTitle } from '@/components/page-title'
 import { EquipoLegend } from '@/components/team-legend'
 import { UserTable } from '@/components/team-table'
 import { createClient } from '@/utils/supabase/server'
@@ -21,6 +22,7 @@ export default async function Page() {
 
   return (
     <>
+      <PageTitle title="Gestión de Equipo" />
       <UserTable data={data} />
       <EquipoLegend />
     </>
