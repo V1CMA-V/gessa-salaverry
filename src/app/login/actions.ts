@@ -35,18 +35,23 @@ export async function signup(formData: FormData) {
   // in practice, you should validate your inputs
   const data = {
     email: formData.get('email') as string,
-    password: formData.get('password') as string,
+    password: 'defaultpassword',
+    options: {
+      data: {
+        full_name: formData.get('full_name') as string,
+        role: formData.get('rol') as string,
+      },
+    },
   }
 
   const { error } = await supabase.auth.signUp(data)
 
   if (error) {
-    redirect('/error')
+    console.log('signup error:', error)
+    // redirect('/error')
   }
 
-  console.log('signup success')
-  revalidatePath('/', 'layout')
-  redirect('/login')
+  redirect('/dashboard/equipo')
 }
 
 export async function logout() {
@@ -55,5 +60,5 @@ export async function logout() {
 
   console.log('logout success')
   revalidatePath('/', 'layout')
-  redirect('/login')
+  redirect('/')
 }

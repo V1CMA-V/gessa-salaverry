@@ -1,6 +1,5 @@
-"use client"
+'use client'
 
-import * as React from "react"
 import {
   IconCamera,
   IconChartBar,
@@ -8,21 +7,19 @@ import {
   IconDatabase,
   IconFileAi,
   IconFileDescription,
-  IconFileWord,
-  IconFolder,
   IconHelp,
   IconInnerShadowTop,
-  IconListDetails,
   IconReport,
   IconSearch,
   IconSettings,
   IconUsers,
-} from "@tabler/icons-react"
+} from '@tabler/icons-react'
+import * as React from 'react'
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavDocuments } from '@/components/nav-documents'
+import { NavMain } from '@/components/nav-main'
+import { NavSecondary } from '@/components/nav-secondary'
+import { NavUser } from '@/components/nav-user'
 import {
   Sidebar,
   SidebarContent,
@@ -31,126 +28,121 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar'
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
-      title: "Dashboard",
-      url: "#",
+      title: 'Dashboard',
+      url: '/dashboard',
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
-    },
-    {
-      title: "Analytics",
-      url: "#",
+      title: 'Muestreos',
+      url: '/muestreos',
       icon: IconChartBar,
     },
     {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
+      title: 'Equipo',
+      url: '/equipo',
       icon: IconUsers,
     },
   ],
   navClouds: [
     {
-      title: "Capture",
+      title: 'Capture',
       icon: IconCamera,
       isActive: true,
-      url: "#",
+      url: '#',
       items: [
         {
-          title: "Active Proposals",
-          url: "#",
+          title: 'Active Proposals',
+          url: '#',
         },
         {
-          title: "Archived",
-          url: "#",
+          title: 'Archived',
+          url: '#',
         },
       ],
     },
     {
-      title: "Proposal",
+      title: 'Proposal',
       icon: IconFileDescription,
-      url: "#",
+      url: '#',
       items: [
         {
-          title: "Active Proposals",
-          url: "#",
+          title: 'Active Proposals',
+          url: '#',
         },
         {
-          title: "Archived",
-          url: "#",
+          title: 'Archived',
+          url: '#',
         },
       ],
     },
     {
-      title: "Prompts",
+      title: 'Prompts',
       icon: IconFileAi,
-      url: "#",
+      url: '#',
       items: [
         {
-          title: "Active Proposals",
-          url: "#",
+          title: 'Active Proposals',
+          url: '#',
         },
         {
-          title: "Archived",
-          url: "#",
+          title: 'Archived',
+          url: '#',
         },
       ],
     },
   ],
   navSecondary: [
     {
-      title: "Settings",
-      url: "#",
+      title: 'Settings',
+      url: '#',
       icon: IconSettings,
     },
     {
-      title: "Get Help",
-      url: "#",
+      title: 'Get Help',
+      url: '#',
       icon: IconHelp,
     },
     {
-      title: "Search",
-      url: "#",
+      title: 'Search',
+      url: '#',
       icon: IconSearch,
     },
   ],
   documents: [
     {
-      name: "Data Library",
-      url: "#",
+      name: 'Base de Datos',
+      url: '#',
       icon: IconDatabase,
     },
     {
-      name: "Reports",
-      url: "#",
+      name: 'Peliculas',
+      url: '#',
       icon: IconReport,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: IconFileWord,
     },
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  role?: string
+  name?: string
+  email?: string
+}
+
+export function AppSidebar({ role, name, email, ...props }: AppSidebarProps) {
+  if (role !== 'admin') {
+    data.navMain.splice(2, 1) // Remove the third item (Equipo) for non-admin users
+  }
+
+  const user = {
+    name: name || 'Usuario',
+    email: email || 'usuario@ejemplo.com',
+  }
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -162,7 +154,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <a href="#">
                 <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-base font-semibold">Gessa Salaverry</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -174,7 +166,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )

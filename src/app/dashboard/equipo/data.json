@@ -1,0 +1,114 @@
+[
+  {
+    "id": 1,
+    "full_name": "Juan Perez",
+    "role": "admin",
+    "email": "juan.perez@example.com",
+    "is_active": true
+  },
+  {
+    "id": 2,
+    "full_name": "María Gómez",
+    "role": "user",
+    "email": "maria.gomez@example.com",
+    "is_active": true
+  },
+  {
+    "id": 3,
+    "full_name": "Luis Fernández",
+    "role": "analyst",
+    "email": "luis.fernandez@example.com",
+    "is_active": true
+  },
+  {
+    "id": 4,
+    "full_name": "Ana Rodríguez",
+    "role": "user",
+    "email": "ana.rodriguez@example.com",
+    "is_active": true
+  },
+  {
+    "id": 5,
+    "full_name": "Carlos Méndez",
+    "role": "user",
+    "email": "carlos.mendez@example.com",
+    "is_active": false
+  },
+  {
+    "id": 6,
+    "full_name": "Sofía Castillo",
+    "role": "admin",
+    "email": "sofia.castillo@example.com",
+    "is_active": true
+  },
+  {
+    "id": 7,
+    "full_name": "Diego Torres",
+    "role": "user",
+    "email": "diego.torres@example.com",
+    "is_active": true
+  },
+  {
+    "id": 8,
+    "full_name": "Lucía Morales",
+    "role": "user",
+    "email": "lucia.morales@example.com",
+    "is_active": false
+  },
+  {
+    "id": 9,
+    "full_name": "Miguel Alvarez",
+    "role": "analyst",
+    "email": "miguel.alvarez@example.com",
+    "is_active": true
+  },
+  {
+    "id": 10,
+    "full_name": "Isabel Navarro",
+    "role": "user",
+    "email": "isabel.navarro@example.com",
+    "is_active": true
+  },
+  {
+    "id": 11,
+    "full_name": "Pablo Rivas",
+    "role": "user",
+    "email": "pablo.rivas@example.com",
+    "is_active": true
+  },
+  {
+    "id": 12,
+    "full_name": "Valentina Lozano",
+    "role": "user",
+    "email": "valentina.lozano@example.com",
+    "is_active": true
+  },
+  {
+    "id": 13,
+    "full_name": "Andrés Molina",
+    "role": "user",
+    "email": "andres.molina@example.com",
+    "is_active": false
+  },
+  {
+    "id": 14,
+    "full_name": "Natalia Peña",
+    "role": "admin",
+    "email": "natalia.pena@example.com",
+    "is_active": true
+  },
+  {
+    "id": 15,
+    "full_name": "Ricardo Silva",
+    "role": "user",
+    "email": "ricardo.silva@example.com",
+    "is_active": true
+  },
+  {
+    "id": 16,
+    "full_name": "Mariana Cruz",
+    "role": "guest",
+    "email": "mariana.cruz@example.com",
+    "is_active": false
+  }
+]
