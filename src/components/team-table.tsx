@@ -298,6 +298,7 @@ export function UserTable({
 }: {
   data: z.infer<typeof schema>[]
 }) {
+  const router = useRouter()
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -310,12 +311,32 @@ export function UserTable({
     pageIndex: 0,
     pageSize: 10,
   })
+  const [isRefreshing, setIsRefreshing] = React.useState(false)
   const sortableId = React.useId()
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
     useSensor(KeyboardSensor, {})
   )
+
+  // Sincronizar datos cuando cambian desde el servidor
+  React.useEffect(() => {
+    setData(initialData)
+  }, [initialData])
+
+  const handleRefresh = React.useCallback(async () => {
+    setIsRefreshing(true)
+    try {
+      router.refresh()
+      toast.success('Tabla actualizada correctamente')
+    } catch (error) {
+      console.error('Error al actualizar la tabla:', error)
+      toast.error('Error al actualizar la tabla')
+    } finally {
+      // Dar tiempo para que el router.refresh() complete
+      setTimeout(() => setIsRefreshing(false), 500)
+    }
+  }, [router])
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
     () => data?.map(({ id }) => id) || [],
@@ -384,6 +405,17 @@ export function UserTable({
           </TabsTrigger>
         </TabsList>
         <div className="flex items-center gap-2">
+          {/* Refrescar tabla */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+          >
+            {isRefreshing ? 'Recargando...' : 'Recargar tabla'}
+          </Button>
+
+          {/* Filtrado de columnas */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">

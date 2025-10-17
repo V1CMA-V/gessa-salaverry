@@ -1,5 +1,5 @@
-import { EquipoLegend } from '@/components/equipo-legend'
-import { UserTable } from '@/components/users-table'
+import { EquipoLegend } from '@/components/team-legend'
+import { UserTable } from '@/components/team-table'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 

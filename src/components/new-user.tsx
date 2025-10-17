@@ -31,13 +31,6 @@ import { Label } from '@/components/ui/label'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
 import { IconPlus } from '@tabler/icons-react'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './ui/select'
 
 // Esquema de validación con Zod
 const userSchema = z.object({
@@ -50,9 +43,6 @@ const userSchema = z.object({
     .min(1, { message: 'El nombre completo es requerido' })
     .min(3, { message: 'El nombre debe tener al menos 3 caracteres' })
     .max(100, { message: 'El nombre no puede exceder 100 caracteres' }),
-  rol: z.enum(['user', 'admin', 'analyst'], {
-    message: 'Debes seleccionar un rol válido',
-  }),
 })
 
 type UserFormData = z.infer<typeof userSchema>
@@ -114,18 +104,13 @@ function ProfileForm({ className }: React.ComponentProps<'form'>) {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setValue,
-    watch,
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
     defaultValues: {
       email: '',
       full_name: '',
-      rol: 'user',
     },
   })
-
-  const selectedRol = watch('rol')
 
   const onSubmit = async (data: UserFormData) => {
     try {
@@ -138,7 +123,6 @@ function ProfileForm({ className }: React.ComponentProps<'form'>) {
       const formData = new FormData()
       formData.append('email', data.email)
       formData.append('full_name', data.full_name)
-      formData.append('rol', data.rol)
 
       console.log('FormData para signup:', {
         email: formData.get('email'),
@@ -190,31 +174,6 @@ function ProfileForm({ className }: React.ComponentProps<'form'>) {
         />
         {errors.full_name && (
           <p className="text-sm text-red-500">{errors.full_name.message}</p>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <Label htmlFor="rol">Rol</Label>
-        <Select
-          value={selectedRol}
-          onValueChange={(value) =>
-            setValue('rol', value as 'user' | 'admin' | 'analyst')
-          }
-        >
-          <SelectTrigger
-            id="rol"
-            className={cn('w-full', errors.rol ? 'border-red-500' : '')}
-          >
-            <SelectValue placeholder="Selecciona un rol" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="user">Usuario</SelectItem>
-            <SelectItem value="admin">Administrador</SelectItem>
-            <SelectItem value="analyst">Analista de Calidad</SelectItem>
-          </SelectContent>
-        </Select>
-        {errors.rol && (
-          <p className="text-sm text-red-500">{errors.rol.message}</p>
         )}
       </div>
 

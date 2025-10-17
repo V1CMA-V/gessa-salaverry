@@ -39,7 +39,6 @@ export async function signup(formData: FormData) {
     options: {
       data: {
         full_name: formData.get('full_name') as string,
-        role: formData.get('rol') as string,
       },
     },
   }
@@ -50,8 +49,6 @@ export async function signup(formData: FormData) {
     console.log('signup error:', error)
     // redirect('/error')
   }
-
-  redirect('/dashboard/equipo')
 }
 
 export async function logout() {
