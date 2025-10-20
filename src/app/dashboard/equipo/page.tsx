@@ -1,0 +1,30 @@
+import { PageTitle } from '@/components/page-title'
+import { EquipoLegend } from '@/components/team-legend'
+import { UserTable } from '@/components/team-table'
+import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
+
+export default async function Page() {
+  const supabase = await createClient()
+  const { data: userData, error } = await supabase.auth.getUser()
+  if (error || userData.user.user_metadata.role !== 'admin') {
+    redirect('/dashboard')
+  }
+
+  const { data, error: fetchError } = await supabase
+    .from('profiles')
+    .select('*')
+
+  if (fetchError) {
+    console.error('Error fetching users:', fetchError)
+    return <div>Error loading users</div>
+  }
+
+  return (
+    <>
+      <PageTitle title="Gestión de Equipo" />
+      <UserTable data={data} />
+      <EquipoLegend />
+    </>
+  )
+}

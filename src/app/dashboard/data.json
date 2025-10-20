@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "cliente": "Cliente 1",
+    "formulation_code": "F001",
+    "medida": "30",
+    "lote": "L001",
+    "caracteristicas": "Caracteristica 1",
+    "revisor": "Revisor 1",
+    "configuration_paper": "sencillo"
+  },
+  {
+    "id": 2,
+    "cliente": "Cliente 2",
+    "formulation_code": "F002",
+    "medida": "25",
+    "lote": "L002",
+    "caracteristicas": "Caracteristica 2",
+    "revisor": "Revisor 2",
+    "configuration_paper": "sencillo"
+  },
+  {
+    "id": 3,
+    "cliente": "Cliente 3",
+    "formulation_code": "F003",
+    "medida": "50",
+    "lote": "L003",
+    "caracteristicas": "Caracteristica 3",
+    "revisor": "Revisor 3",
+    "configuration_paper": "sencillo"
+  },
+  {
+    "id": 4,
+    "cliente": "Cliente 4",
+    "formulation_code": "F004",
+    "medida": "30",
+    "lote": "L004",
+    "caracteristicas": "Caracteristica 4",
+    "revisor": "Revisor 4",
+    "configuration_paper": "doble"
+  },
+  {
+    "id": 5,
+    "cliente": "Cliente 5",
+    "formulation_code": "F005",
+    "medida": "40",
+    "lote": "L005",
+    "caracteristicas": "Caracteristica 5",
+    "revisor": "Revisor 5",
+    "configuration_paper": "doble"
+  },
+  {
+    "id": 6,
+    "cliente": "Cliente 6",
+    "formulation_code": "F006",
+    "medida": "35",
+    "lote": "L006",
+    "caracteristicas": "Caracteristica 6",
+    "revisor": "Revisor 6",
+    "configuration_paper": "doble"
+  },
+  {
+    "id": 7,
+    "cliente": "Cliente 7",
+    "formulation_code": "F007",
+    "medida": "20",
+    "lote": "L007",
+    "caracteristicas": "Caracteristica 7",
+    "revisor": "Revisor 7",
+    "configuration_paper": "triple"
+  },
+  {
+    "id": 8,
+    "cliente": "Cliente 8",
+    "formulation_code": "F008",
+    "medida": "30",
+    "lote": "L008",
+    "caracteristicas": "Caracteristica 8",
+    "revisor": "Revisor 8",
+    "configuration_paper": "triple"
+  },
+  {
+    "id": 9,
+    "cliente": "Cliente 9",
+    "formulation_code": "F009",
+    "medida": "45",
+    "lote": "L009",
+    "caracteristicas": "Caracteristica 9",
+    "revisor": "Revisor 9",
+    "configuration_paper": "triple"
+  },
+  {
+    "id": 10,
+    "cliente": "Cliente 10",
+    "formulation_code": "F010",
+    "medida": "30",
+    "lote": "L010",
+    "caracteristicas": "Caracteristica 10",
+    "revisor": "Revisor 10",
+    "configuration_paper": "cuadruple"
+  },
+  {
+    "id": 11,
+    "cliente": "Cliente 11",
+    "formulation_code": "F011",
+    "medida": "55",
+    "lote": "L011",
+    "caracteristicas": "Caracteristica 11",
+    "revisor": "Revisor 11",
+    "configuration_paper": "cuadruple"
+  },
+  {
+    "id": 12,
+    "cliente": "Cliente 12",
+    "formulation_code": "F012",
+    "medida": "60",
+    "lote": "L012",
+    "caracteristicas": "Caracteristica 12",
+    "revisor": "Revisor 12",
+    "configuration_paper": "cuadruple"
+  },
+  {
+    "id": 13,
+    "cliente": "Cliente 13",
+    "formulation_code": "F013",
+    "medida": "30",
+    "lote": "L013",
+    "caracteristicas": "Caracteristica 13",
+    "revisor": "Revisor 13",
+    "configuration_paper": "quintuple"
+  },
+  {
+    "id": 14,
+    "cliente": "Cliente 14",
+    "formulation_code": "F014",
+    "medida": "42",
+    "lote": "L014",
+    "caracteristicas": "Caracteristica 14",
+    "revisor": "Revisor 14",
+    "configuration_paper": "quintuple"
+  },
+  {
+    "id": 15,
+    "cliente": "Cliente 15",
+    "formulation_code": "F015",
+    "medida": "30",
+    "lote": "L015",
+    "caracteristicas": "Caracteristica 15",
+    "revisor": "Revisor 15",
+    "configuration_paper": "quintuple"
+  },
+  {
+    "id": 16,
+    "cliente": "Cliente 16",
+    "formulation_code": "F016",
+    "medida": "30",
+    "lote": "L016",
+    "caracteristicas": "Caracteristica 16",
+    "revisor": "Revisor 16",
+    "configuration_paper": "sextuple"
+  },
+  {
+    "id": 17,
+    "cliente": "Cliente 17",
+    "formulation_code": "F017",
+    "medida": "28",
+    "lote": "L017",
+    "caracteristicas": "Caracteristica 17",
+    "revisor": "Revisor 17",
+    "configuration_paper": "sextuple"
+  },
+  {
+    "id": 18,
+    "cliente": "Cliente 18",
+    "formulation_code": "F018",
+    "medida": "30",
+    "lote": "L018",
+    "caracteristicas": "Caracteristica 18",
+    "revisor": "Revisor 18",
+    "configuration_paper": "sextuple"
+  }
+]

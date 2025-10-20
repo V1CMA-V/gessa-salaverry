@@ -1,36 +1,41 @@
-import { DataTable } from "@/components/data-table"
-import { SectionCards } from "@/components/section-cards"
-import { SiteHeader } from "@/components/site-header"
-import { SidebarInset } from "@/components/ui/sidebar"
-
-import { createClient } from "../utils/supabase/server"
-
-export const metadata = {
-  title: "Dashboard",
-  description: "Dashboard"
-}
+import { ChartAreaInteractive } from '@/components/chart-area-interactive'
+import { PageTitle } from '@/components/page-title'
+import { PeliculasTable } from '@/components/peliculas-table'
+import { SectionCards } from '@/components/section-cards'
+import { createClient } from '@/utils/supabase/server'
 
 export default async function Page() {
   const supabase = await createClient()
-  const { data: peliculas, error } = await supabase.from("peliculas").select("*").order("fecha", { ascending: false })
+  const { data, error: fetchError } = await supabase
+    .from('inspections')
+    .select(
+      'id, customer, inspection_date, roll_config, batch_id(batch_code), feature, formulation_code, created_by(full_name)'
+    )
 
-  if (error) {
-    console.error("Error fetching peliculas:", error)
-    return <div>Error loading peliculas</div>
+  if (fetchError) {
+    console.error('Error fetching inspections:', fetchError)
+    return <div>Error fetching inspections</div>
   }
 
-  return (
-    <SidebarInset>
-      <SiteHeader />
-      <div className="flex flex-1 flex-col">
-        <div className="@container/main flex flex-1 flex-col gap-2">
-          <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-            <SectionCards />
+  const normalizedData = (data ?? []).map((row: any) => ({
+    ...row,
+    // supabase nested selects return arrays for relations; take the first related row
+    batch_id: Array.isArray(row.batch_id)
+      ? row.batch_id[0] ?? null
+      : row.batch_id,
+    created_by: Array.isArray(row.created_by)
+      ? row.created_by[0] ?? null
+      : row.created_by,
+  }))
 
-            <DataTable data={peliculas} />
-          </div>
-        </div>
+  return (
+    <>
+      <PageTitle title="Dashboard" />
+      <SectionCards />
+      <div className="px-4 lg:px-6">
+        <ChartAreaInteractive />
       </div>
-    </SidebarInset>
+      <PeliculasTable data={normalizedData as any} />
+    </>
   )
 }
