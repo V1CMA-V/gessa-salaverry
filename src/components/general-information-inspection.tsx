@@ -6,6 +6,7 @@ import {
   IconUser,
 } from '@tabler/icons-react'
 import { notFound } from 'next/navigation'
+import { BatchInfoDialog } from './batch-info-dialog'
 import { PageTitle } from './page-title'
 import { Badge } from './ui/badge'
 import {
@@ -35,7 +36,7 @@ export default async function GeneralInformationInspection({
       thickness_microns,
       width_cm,
       roll_config,
-      batch_id(batch_code),
+      batch_id(batch_code, notes, target_lot_weight_kg, target_weight_per_roll_kg),
       formulation_code,
       feature,
       note,
@@ -103,9 +104,10 @@ export default async function GeneralInformationInspection({
                   <IconPackage className="size-4" />
                   <span>Lote</span>
                 </div>
-                <Badge variant="outline" className="text-base font-medium">
-                  {normalizedInspection.batch_id?.batch_code || 'N/A'}
-                </Badge>
+                <BatchInfoDialog
+                  batchCode={normalizedInspection.batch_id?.batch_code || 'N/A'}
+                  batchInfo={normalizedInspection.batch_id}
+                />
               </div>
 
               <div className="space-y-2">
