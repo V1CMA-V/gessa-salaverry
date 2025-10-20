@@ -114,8 +114,6 @@ function ProfileForm({ className }: React.ComponentProps<'form'>) {
 
   const onSubmit = async (data: UserFormData) => {
     try {
-      console.log('Datos del formulario:', data)
-
       // Mostrar notificación de carga
       toast.loading('Creando usuario...', { id: 'create-user' })
 
@@ -124,18 +122,11 @@ function ProfileForm({ className }: React.ComponentProps<'form'>) {
       formData.append('email', data.email)
       formData.append('full_name', data.full_name)
 
-      console.log('FormData para signup:', {
-        email: formData.get('email'),
-        full_name: formData.get('full_name'),
-        rol: formData.get('rol'),
-      })
-
       // Llamar a la función signup
       await signup(formData)
 
       // Mostrar notificación de éxito
       toast.success('Usuario creado exitosamente', { id: 'create-user' })
-      console.log('Usuario creado exitosamente')
     } catch (error) {
       console.error('Error al crear usuario:', error)
       // Mostrar notificación de error

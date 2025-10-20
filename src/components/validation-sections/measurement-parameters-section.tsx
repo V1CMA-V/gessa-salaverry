@@ -129,10 +129,10 @@ export function MeasurementParametersSection({
               <Input
                 type="number"
                 step="0.1"
-                value={data.encogimientos.estatico.kof}
+                value={data.encogimientos.longitudinal.dinamico}
                 onChange={(e) =>
                   handleChange(
-                    ['encogimientos', 'estatico', 'kof'],
+                    ['encogimientos', 'longitudinal', 'dinamico'],
                     parseFloat(e.target.value) || 0
                   )
                 }
@@ -145,10 +145,10 @@ export function MeasurementParametersSection({
               <Input
                 type="number"
                 step="0.1"
-                value={data.encogimientos.estatico.dinamico}
+                value={data.encogimientos.longitudinal.kof}
                 onChange={(e) =>
                   handleChange(
-                    ['encogimientos', 'estatico', 'dinamico'],
+                    ['encogimientos', 'longitudinal', 'kof'],
                     parseFloat(e.target.value) || 0
                   )
                 }

@@ -69,8 +69,6 @@ export function NewBatch({
     event?.stopPropagation()
 
     try {
-      console.log('Datos del nuevo lote:', data)
-
       // Mostrar notificación de carga
       toast.loading('Creando lote...', { id: 'create-batch' })
 

@@ -79,7 +79,6 @@ export function GeneralInfoSection({
     return time
   }
 
-  console.log('hora liberacion', data.horaLiberacion)
 
   return (
     <Card>

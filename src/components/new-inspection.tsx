@@ -115,8 +115,6 @@ export default function NewInspection() {
 
   const onSubmit = async (data: InspectionFormData) => {
     try {
-      console.log('Datos del formulario:', data)
-
       // Mostrar notificación de carga
       toast.loading('Creando inspección...', { id: 'create-inspection' })
 

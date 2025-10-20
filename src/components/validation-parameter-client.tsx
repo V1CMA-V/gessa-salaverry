@@ -236,7 +236,7 @@ interface ValidationParameterClientProps {
   id: string
   initialData: any[] | null
   calibre?: string
-  config?: string
+  config: string
 }
 
 export default function ValidationParameterClient({
@@ -329,22 +329,6 @@ export default function ValidationParameterClient({
       },
     }))
 
-    console.log('📊 Datos organizados por secciones para guardar:')
-    console.log('='.repeat(80))
-    dataToSave.forEach((data, index) => {
-      console.log(`\n🔹 VALIDACIÓN ${index + 1}`)
-      console.log('\n📝 Información General (info_general):')
-      console.log(data.info_general)
-      console.log('\n⚙️ Parámetros de Validación (parametros_validacion):')
-      console.log(data.parametros_validacion)
-      console.log('\n📐 Parámetros Individuales (parametros_individuales):')
-      console.log(data.parametros_individuales)
-      console.log('\n📏 Mediciones de Calibre (mediciones_calibre):')
-      console.log(data.mediciones_calibre)
-      console.log('\n✅ Resultados (resultados):')
-      console.log(data.resultados)
-      console.log('\n' + '='.repeat(80))
-    })
 
     setIsEditing(false)
     // TODO: Implementar llamada a API/Supabase para guardar
@@ -412,20 +396,6 @@ export default function ValidationParameterClient({
       },
     }
 
-    console.log('➕ Nueva validación agregada - Datos por secciones:')
-    console.log('='.repeat(80))
-    console.log(`\n🔹 VALIDACIÓN ${newId}`)
-    console.log('\n📝 Información General (info_general):')
-    console.log(newValidationData.info_general)
-    console.log('\n⚙️ Parámetros de Validación (parametros_validacion):')
-    console.log(newValidationData.parametros_validacion)
-    console.log('\n📐 Parámetros Individuales (parametros_individuales):')
-    console.log(newValidationData.parametros_individuales)
-    console.log('\n📏 Mediciones de Calibre (mediciones_calibre):')
-    console.log(newValidationData.mediciones_calibre)
-    console.log('\n✅ Resultados (resultados):')
-    console.log(newValidationData.resultados)
-    console.log('\n' + '='.repeat(80))
 
     setValidations([...validations, newValidation])
     setActiveTab(newId)

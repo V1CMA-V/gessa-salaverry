@@ -1,690 +1,260 @@
 'use client'
 
-import { IconDeviceFloppy, IconEdit, IconX } from '@tabler/icons-react'
-import { useState } from 'react'
 import { PageTitle } from './page-title'
-import { Button } from './ui/button'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from './ui/card'
-import { Checkbox } from './ui/checkbox'
-import { Input } from './ui/input'
-import { Label } from './ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './ui/select'
-import { Separator } from './ui/separator'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from './ui/table'
+  CaliberMeasurementsSection,
+  GeneralInfoSection,
+  MeasurementParametersSection,
+  ResultsSection,
+  ValidationParametersSection,
+} from './validation-sections'
 
-// Datos falsos para el ejemplo
-const mockData = {
-  analistaCalidad: 'Juan Pérez',
-  horaLiberacion: '14:30',
-  operadorMaquina: 'Carlos González',
+// Tipo de datos para una liberación
+export type LiberationData = {
+  id: string
+  analistaCalidad: {
+    id: string
+    full_name: string
+  }
+  horaLiberacion: string
+  operadorMaquina: string
+  parametrosValidacion: {
+    kilogramosHora: number
+    velocidadMotorA: number
+    velocidadMotorB: number
+    velocidadMotorC: number
+    velocidadTurbo: number
+    velocidadJalador: number
+    tensionBobinador1: number
+    tensionBobinador2: number
+    prearrastre: number
+    presionBobinadorIzq: number
+    presionBobinadorDer: number
+    temperaturaCañonA: number
+    temperaturaCañonB: number
+    temperaturaCañonC: number
+  }
   encogimientos: {
-    estatico: { kof: 2.5, dinamico: 3.2 },
-    longitudinal: { kof: 1.8, dinamico: 2.4 },
-  },
+    estatico: { kof: number; dinamico: number }
+    longitudinal: { kof: number; dinamico: number }
+  }
   coeficienteFriccion: {
-    nivel: 0.35,
-  },
+    nivel: number
+  }
   campoElectrostatico: {
-    nivel: 2.5,
-  },
+    nivel: number
+  }
   valoresAceptables: {
-    maximo: 0,
-    minimo: 0,
-    moda: 0,
-    rango: 0,
-  },
-  medicionesCalibre: [
-    [125, 128, 127, 126, 129, 130, 128, 127],
-    [126, 127, 129, 128, 127, 126, 128, 129],
-    [128, 126, 127, 129, 128, 127, 126, 128],
-    [127, 129, 128, 126, 127, 128, 129, 127],
-    [129, 127, 126, 128, 129, 128, 127, 126],
-    [128, 128, 127, 127, 126, 129, 128, 127],
-    [127, 126, 128, 129, 127, 128, 126, 129],
-    [126, 129, 127, 128, 128, 127, 129, 126],
-    [128, 127, 129, 127, 126, 128, 127, 128],
-    [127, 128, 126, 128, 127, 129, 128, 127],
-  ],
+    maximo: number
+    minimo: number
+    moda: number
+    rango: number
+  }
+  medicionesCalibre: number[][]
   resultados: {
-    muestreoDentroLimites: true,
-    rangoAceptado: true,
-    acabados: true,
-    validacionFormula: true,
-    apariencia: true,
-  },
+    muestreoDentroLimites: boolean
+    rangoAceptado: boolean
+    acabados: boolean
+    validacionFormula: boolean
+    apariencia: boolean
+  }
+  siguientesPasos: string
 }
 
-export default function LiberationParameters({ id }: { id: string }) {
-  const [isEditing, setIsEditing] = useState(false)
-  const [editedData, setEditedData] = useState(mockData)
-  const [siguientesPasos, setSiguientesPasos] = useState('')
+const transformGaugeValues = (values: any): number[][] => {
+  if (typeof values === 'object' && values !== null) {
+    if (values.data && Array.isArray(values.data)) {
+      return values.data
+    }
 
-  const handleEdit = () => {
-    setIsEditing(true)
-  }
+    if (Array.isArray(values)) {
+      return values
+    }
 
-  const handleCancel = () => {
-    setIsEditing(false)
-    setEditedData(mockData) // Restaurar datos originales
-  }
+    const keys = Object.keys(values).sort()
+    const matrix: number[][] = []
 
-  const handleSave = () => {
-    // Aquí iría la lógica para guardar en la base de datos
-    console.log('Guardando datos:', editedData)
-    setIsEditing(false)
-    // TODO: Implementar llamada a API/Supabase
-  }
-
-  const updateNestedValue = (path: string[], value: any) => {
-    setEditedData((prev) => {
-      const newData = { ...prev }
-      let current: any = newData
-      for (let i = 0; i < path.length - 1; i++) {
-        current[path[i]] = { ...current[path[i]] }
-        current = current[path[i]]
+    for (let i = 0; i < 10; i++) {
+      const key = keys[i] || `pos${i + 1}`
+      const row = values[key]
+      if (Array.isArray(row) && row.length === 8) {
+        matrix.push(row)
+      } else {
+        matrix.push(Array(8).fill(0))
       }
-      current[path[path.length - 1]] = value
-      return newData
-    })
+    }
+
+    return matrix
   }
 
-  const updateTableCell = (rowIdx: number, cellIdx: number, value: number) => {
-    setEditedData((prev) => {
-      const newData = { ...prev }
-      const newMediciones = [...newData.medicionesCalibre]
-      newMediciones[rowIdx] = [...newMediciones[rowIdx]]
-      newMediciones[rowIdx][cellIdx] = value
-      return { ...newData, medicionesCalibre: newMediciones }
-    })
+  return Array(10)
+    .fill(null)
+    .map(() => Array(8).fill(0))
+}
+
+// Función para transformar datos de Supabase a nuestro formato
+const transformSupabaseData = (item: any): LiberationData => {
+  return {
+    id: item.id || '',
+    analistaCalidad: {
+      id: item.info_id?.analyst?.id || '',
+      full_name: item.info_id?.analyst?.full_name || '',
+    },
+    horaLiberacion: item.info_id?.release_time || '',
+    operadorMaquina: item.info_id?.operator || '',
+    parametrosValidacion: {
+      kilogramosHora: item.machine_id?.kilograms_per_hour || 0,
+      velocidadMotorA: item.machine_id?.motor_speed_a || 0,
+      velocidadMotorB: item.machine_id?.motor_speed_b || 0,
+      velocidadMotorC: item.machine_id?.motor_speed_c || 0,
+      velocidadTurbo: item.machine_id?.turbo_speed || 0,
+      velocidadJalador: item.machine_id?.puller_speed || 0,
+      tensionBobinador1: item.machine_id?.winder_tension_1 || 0,
+      tensionBobinador2: item.machine_id?.winder_tension_2 || 0,
+      prearrastre: item.machine_id?.pre_pull || 0,
+      presionBobinadorIzq: item.machine_id?.winder_pressure_left || 0,
+      presionBobinadorDer: item.machine_id?.winder_pressure_right || 0,
+      temperaturaCañonA: item.machine_id?.barrel_temp_a || 0,
+      temperaturaCañonB: item.machine_id?.barrel_temp_b || 0,
+      temperaturaCañonC: item.machine_id?.barrel_temp_c || 0,
+    },
+    encogimientos: {
+      estatico: {
+        kof: item.single_params_id?.kof_static || 0,
+        dinamico: item.single_params_id?.kof_dynamic || 0,
+      },
+      longitudinal: {
+        kof: item.single_params_id?.shrink_long || 0,
+        dinamico: item.single_params_id?.shrink_trans || 0,
+      },
+    },
+    coeficienteFriccion: {
+      nivel: 0,
+    },
+    campoElectrostatico: {
+      nivel: item.single_params_id?.electrostatic_field || 0,
+    },
+    valoresAceptables: {
+      maximo: item.single_params_id?.max_value || 0,
+      minimo: item.single_params_id?.min_value || 0,
+      moda: item.single_params_id?.mode_value || 0,
+      rango: item.single_params_id?.range_value || 0,
+    },
+    medicionesCalibre: item.gauge_id?.values
+      ? transformGaugeValues(item.gauge_id.values)
+      : Array(10)
+          .fill(null)
+          .map(() => Array(8).fill(0)),
+    resultados: {
+      muestreoDentroLimites: item.results_id?.within_spec_limits || false,
+      rangoAceptado: item.results_id?.range_accepted || false,
+      acabados: item.results_id?.design_ok || false,
+      validacionFormula: item.results_id?.formulation_validated || false,
+      apariencia: item.results_id?.appearance_ok || false,
+    },
+    siguientesPasos: item.results_id?.note || '',
   }
+}
 
-  //   const supabase = await createClient()
+interface LiberationParametersProps {
+  id: string
+  initialData: any[] | null
+  calibre?: string
+  config: string
+}
 
-  //   // Obtener los datos de la inspección
-  //   const { data: inspection, error } = await supabase
-  //     .from('inspections')
-  //     .select(
-  //       `
-  //       id,
-  //       customer,
-  //       inspection_date,
-  //       thickness_microns,
-  //       width_cm,
-  //       roll_config,
-  //       batch_id(batch_code),
-  //       formulation_code,
-  //       feature,
-  //       nota,
-  //       created_at,
-  //       created_by(full_name, email)
-  //     `
-  //     )
-  //     .eq('id', id)
-  //     .single()
+export default function LiberationParameters({
+  id,
+  initialData,
+  calibre,
+  config,
+}: LiberationParametersProps) {
+  // Filtrar solo las validaciones con is_released = true y tomar la primera
+  const releasedValidation =
+    initialData && initialData.length > 0
+      ? initialData.find((validation) => validation.is_released === true)
+      : null
 
-  //   if (error || !inspection) {
-  //     notFound()
-  //   }
+  const liberation = releasedValidation
+    ? transformSupabaseData(releasedValidation)
+    : null
 
-  //   // Normalizar datos anidados
-  //   const normalizedInspection = {
-  //     ...inspection,
-  //     batch_id: Array.isArray(inspection.batch_id)
-  //       ? inspection.batch_id[0] ?? null
-  //       : inspection.batch_id,
-  //     created_by: Array.isArray(inspection.created_by)
-  //       ? inspection.created_by[0] ?? null
-  //       : inspection.created_by,
-  //   }
+  if (!liberation) {
+    return (
+      <>
+        <PageTitle title="Parámetros de Liberación" />
+        <div className="px-4 lg:px-6 space-y-6 pb-8">
+          <div className="text-center py-12 text-muted-foreground">
+            <p className="text-lg">
+              No hay parámetros de liberación registrados
+            </p>
+            <p className="text-sm mt-2">
+              Primero debe liberarse una validación en la pestaña de Parámetros
+              de Validación
+            </p>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
-      <PageTitle title={`Muestreo de Liberación`} />
-
+      <PageTitle title="Parámetros de Liberación" />
       <div className="px-4 lg:px-6 space-y-6 pb-8">
-        {/* Botones de Acción */}
-        <div className="flex justify-end gap-2">
-          {!isEditing ? (
-            <Button onClick={handleEdit} className="gap-2">
-              <IconEdit className="h-4 w-4" />
-              Editar
-            </Button>
-          ) : (
-            <>
-              <Button
-                onClick={handleCancel}
-                variant="outline"
-                className="gap-2"
-              >
-                <IconX className="h-4 w-4" />
-                Cancelar
-              </Button>
-              <Button onClick={handleSave} className="gap-2">
-                <IconDeviceFloppy className="h-4 w-4" />
-                Guardar Cambios
-              </Button>
-            </>
-          )}
-        </div>
+        {/* Información General */}
+        <GeneralInfoSection
+          id={id}
+          isEditing={false}
+          data={{
+            id: liberation.analistaCalidad.id,
+            full_name: liberation.analistaCalidad.full_name,
+            horaLiberacion: liberation.horaLiberacion,
+            operadorMaquina: liberation.operadorMaquina,
+          }}
+          onDataChange={() => {}}
+        />
 
-        {/* Información del Analista */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Información General</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="analista">Analista de Calidad:</Label>
-                <Select
-                  value={editedData.analistaCalidad}
-                  onValueChange={(value) =>
-                    setEditedData({ ...editedData, analistaCalidad: value })
-                  }
-                  disabled={!isEditing}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecciona un analista" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Juan Pérez">Juan Pérez</SelectItem>
-                    <SelectItem value="VICMA">VICMA</SelectItem>
-                    <SelectItem value="Carlos González">
-                      Carlos González
-                    </SelectItem>
-                    <SelectItem value="María López">María López</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="hora">Hora de Liberación:</Label>
-                <Input
-                  id="hora"
-                  type="time"
-                  value={editedData.horaLiberacion}
-                  onChange={(e) =>
-                    setEditedData({
-                      ...editedData,
-                      horaLiberacion: e.target.value,
-                    })
-                  }
-                  readOnly={!isEditing}
-                  className={!isEditing ? 'bg-muted' : ''}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="operador">Operador de Máquina:</Label>
-                <Input
-                  id="operador"
-                  value={editedData.operadorMaquina}
-                  onChange={(e) =>
-                    setEditedData({
-                      ...editedData,
-                      operadorMaquina: e.target.value,
-                    })
-                  }
-                  readOnly={!isEditing}
-                  className={!isEditing ? 'bg-muted' : ''}
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Parámetros de Validación */}
+        <ValidationParametersSection
+          id={id}
+          isEditing={false}
+          data={liberation.parametrosValidacion}
+          onDataChange={() => {}}
+        />
+
+        {/* Mediciones de Calibre */}
+        <CaliberMeasurementsSection
+          id={id}
+          isEditing={false}
+          data={liberation.medicionesCalibre}
+          config={config}
+          onDataChange={() => {}}
+        />
 
         {/* Parámetros de Medición */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Encogimientos */}
-          <Card>
-            <CardHeader className="">
-              <CardTitle className="text-sm">ENCOGIMIENTOS:</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">KOF Estático</span>
-                  <Input
-                    type="number"
-                    step="0.1"
-                    value={editedData.encogimientos.estatico.kof}
-                    onChange={(e) =>
-                      updateNestedValue(
-                        ['encogimientos', 'estatico', 'kof'],
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    readOnly={!isEditing}
-                    className={`w-24 text-center ${
-                      !isEditing ? 'bg-muted' : ''
-                    }`}
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">KOF Dinámico</span>
-                  <Input
-                    type="number"
-                    step="0.1"
-                    value={editedData.encogimientos.estatico.dinamico}
-                    onChange={(e) =>
-                      updateNestedValue(
-                        ['encogimientos', 'estatico', 'dinamico'],
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    readOnly={!isEditing}
-                    className={`w-24 text-center ${
-                      !isEditing ? 'bg-muted' : ''
-                    }`}
-                  />
-                </div>
-                <Separator />
-                <CardTitle className="text-sm">
-                  COEFICIENTE DE FRICCION:
-                </CardTitle>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Encog. Trans</span>
-                  <Input
-                    type="number"
-                    step="0.1"
-                    value={editedData.encogimientos.estatico.kof}
-                    onChange={(e) =>
-                      updateNestedValue(
-                        ['encogimientos', 'estatico', 'kof'],
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    readOnly={!isEditing}
-                    className={`w-24 text-center ${
-                      !isEditing ? 'bg-muted' : ''
-                    }`}
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Encog. Long</span>
-                  <Input
-                    type="number"
-                    step="0.1"
-                    value={editedData.encogimientos.estatico.dinamico}
-                    onChange={(e) =>
-                      updateNestedValue(
-                        ['encogimientos', 'estatico', 'dinamico'],
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    readOnly={!isEditing}
-                    className={`w-24 text-center ${
-                      !isEditing ? 'bg-muted' : ''
-                    }`}
-                  />
-                </div>
-                <Separator />
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-sm">
-                      CAMPO ELECTROSTÁTICO:
-                    </CardTitle>
-                    <CardDescription className="mb-2">
-                      Nivel menor a 3kv/in
-                    </CardDescription>
-                  </div>
-                  <Input
-                    type="number"
-                    step="0.1"
-                    value={editedData.campoElectrostatico.nivel}
-                    onChange={(e) =>
-                      updateNestedValue(
-                        ['campoElectrostatico', 'nivel'],
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    readOnly={!isEditing}
-                    className={`w-24 text-center ${
-                      !isEditing ? 'bg-muted' : ''
-                    }`}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Valores Aceptables */}
-          <Card>
-            <CardHeader className="">
-              <CardTitle className="text-sm">
-                VALORES ACEPTABLES CALIBRE
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>MÁXIMO</Label>
-                  <Input
-                    type="number"
-                    value={editedData.valoresAceptables.maximo}
-                    onChange={(e) =>
-                      updateNestedValue(
-                        ['valoresAceptables', 'maximo'],
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    readOnly={!isEditing}
-                    className={`text-center ${!isEditing ? 'bg-muted' : ''}`}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>MÍNIMO</Label>
-                  <Input
-                    type="number"
-                    value={editedData.valoresAceptables.minimo}
-                    onChange={(e) =>
-                      updateNestedValue(
-                        ['valoresAceptables', 'minimo'],
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    readOnly={!isEditing}
-                    className={`text-center ${!isEditing ? 'bg-muted' : ''}`}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>MODA</Label>
-                  <Input
-                    type="number"
-                    value={editedData.valoresAceptables.moda}
-                    onChange={(e) =>
-                      updateNestedValue(
-                        ['valoresAceptables', 'moda'],
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    readOnly={!isEditing}
-                    className={`text-center ${!isEditing ? 'bg-muted' : ''}`}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>RANGO</Label>
-                  <Input
-                    type="number"
-                    value={editedData.valoresAceptables.rango}
-                    onChange={(e) =>
-                      updateNestedValue(
-                        ['valoresAceptables', 'rango'],
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    readOnly={!isEditing}
-                    className={`text-center ${!isEditing ? 'bg-muted' : ''}`}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Tabla de Mediciones de Calibre */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Mediciones de Calibre: Liberación/Parada 1</CardTitle>
-            <CardDescription>
-              Rollos Por Flecha/Posición - 10 Posiciones
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-32 bg-blue-200">Posición</TableHead>
-                    <TableHead className="text-center bg-blue-200/80">
-                      1
-                    </TableHead>
-                    <TableHead className="text-center bg-blue-200/80">
-                      2
-                    </TableHead>
-                    <TableHead className="text-center bg-blue-200/80">
-                      3
-                    </TableHead>
-                    <TableHead className="text-center bg-blue-200/80">
-                      4
-                    </TableHead>
-                    <TableHead className="text-center bg-blue-200/80">
-                      5
-                    </TableHead>
-                    <TableHead className="text-center bg-blue-200/80">
-                      6
-                    </TableHead>
-                    <TableHead className="text-center bg-blue-200/80">
-                      7
-                    </TableHead>
-                    <TableHead className="text-center bg-blue-200/80">
-                      8
-                    </TableHead>
-                    <TableHead className="bg-amber-100 text-center">
-                      Medida de Ancho
-                    </TableHead>
-                    <TableHead className="bg-gray-200 text-center">
-                      Resultados
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {editedData.medicionesCalibre.map((row, idx) => {
-                    const min = Math.min(...row)
-                    const max = Math.max(...row)
-                    const sum = row.reduce((a, b) => a + b, 0)
-                    const avg = (sum / row.length).toFixed(1)
-                    const range = max - min
-
-                    // Alternar color por pares: filas 0-1 color A, 2-3 color B, 4-5 A, etc.
-                    const pairParity = Math.floor(idx / 2) % 2 // 0 or 1
-                    const rowBg =
-                      pairParity === 0 ? 'bg-blue-200/30' : 'bg-blue-200/20'
-
-                    return (
-                      <TableRow key={idx} className={rowBg}>
-                        <TableCell className={`font-medium `}>
-                          Posición {idx + 1}
-                        </TableCell>
-                        {row.map((val, cellIdx) => (
-                          <TableCell key={cellIdx} className="text-center p-1">
-                            {isEditing ? (
-                              <Input
-                                type="number"
-                                value={val}
-                                onChange={(e) =>
-                                  updateTableCell(
-                                    idx,
-                                    cellIdx,
-                                    parseInt(e.target.value) || 0
-                                  )
-                                }
-                                className="w-16 h-8 text-center mx-auto"
-                              />
-                            ) : (
-                              val
-                            )}
-                          </TableCell>
-                        ))}
-                        <TableCell className="bg-amber-50 text-center">
-                          {avg}
-                        </TableCell>
-                        <TableCell className="bg-gray-50 text-center font-medium">
-                          {idx === 0
-                            ? 'Mínimo'
-                            : idx === 1
-                            ? min
-                            : idx === 2
-                            ? 'Máximo'
-                            : idx === 3
-                            ? max
-                            : idx === 4
-                            ? 'Rango'
-                            : idx === 5
-                            ? range
-                            : idx === 6
-                            ? 'Moda'
-                            : idx === 7
-                            ? '#N/D'
-                            : idx === 8
-                            ? 'Promedio'
-                            : `#¡DIV/0!`}
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Gráfico (Placeholder) */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Gráfico de Control</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-64 bg-gray-50 rounded-md flex items-center justify-center border-2 border-dashed">
-              <div className="text-center text-muted-foreground">
-                <p className="text-sm">Área del gráfico de control</p>
-                <p className="text-xs mt-2">
-                  Muestreo, Setpoint, LIE, LSE, LIC, LSC
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <MeasurementParametersSection
+          id={id}
+          isEditing={false}
+          calibre={calibre}
+          data={{
+            encogimientos: liberation.encogimientos,
+            coeficienteFriccion: liberation.coeficienteFriccion,
+            campoElectrostatico: liberation.campoElectrostatico,
+            valoresAceptables: liberation.valoresAceptables,
+          }}
+          onDataChange={() => {}}
+        />
 
         {/* Resultados */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Resultados</CardTitle>
-            <CardDescription>¿Se libera el producto?</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="muestreo"
-                  checked={editedData.resultados.muestreoDentroLimites}
-                  onCheckedChange={(checked) =>
-                    updateNestedValue(
-                      ['resultados', 'muestreoDentroLimites'],
-                      checked
-                    )
-                  }
-                  disabled={!isEditing}
-                />
-                <Label
-                  htmlFor="muestreo"
-                  className={isEditing ? 'cursor-pointer' : 'cursor-default'}
-                >
-                  Muestreo Dentro de Límites de Especificación
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="rango"
-                  checked={editedData.resultados.rangoAceptado}
-                  onCheckedChange={(checked) =>
-                    updateNestedValue(['resultados', 'rangoAceptado'], checked)
-                  }
-                  disabled={!isEditing}
-                />
-                <Label
-                  htmlFor="rango"
-                  className={isEditing ? 'cursor-pointer' : 'cursor-default'}
-                >
-                  Rango Aceptado
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="acabados"
-                  checked={editedData.resultados.acabados}
-                  onCheckedChange={(checked) =>
-                    updateNestedValue(['resultados', 'acabados'], checked)
-                  }
-                  disabled={!isEditing}
-                />
-                <Label
-                  htmlFor="acabados"
-                  className={isEditing ? 'cursor-pointer' : 'cursor-default'}
-                >
-                  Acabados
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="validacion"
-                  checked={editedData.resultados.validacionFormula}
-                  onCheckedChange={(checked) =>
-                    updateNestedValue(
-                      ['resultados', 'validacionFormula'],
-                      checked
-                    )
-                  }
-                  disabled={!isEditing}
-                />
-                <Label
-                  htmlFor="validacion"
-                  className={isEditing ? 'cursor-pointer' : 'cursor-default'}
-                >
-                  Validación de Formula
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="apariencia"
-                  checked={editedData.resultados.apariencia}
-                  onCheckedChange={(checked) =>
-                    updateNestedValue(['resultados', 'apariencia'], checked)
-                  }
-                  disabled={!isEditing}
-                />
-                <Label
-                  htmlFor="apariencia"
-                  className={isEditing ? 'cursor-pointer' : 'cursor-default'}
-                >
-                  Apariencia
-                </Label>
-              </div>
-
-              <Separator className="my-4 col-span-3" />
-
-              <div className="space-y-2 col-span-3">
-                <Label htmlFor="siguientes">Siguientes Pasos:</Label>
-                <Input
-                  id="siguientes"
-                  value={siguientesPasos}
-                  onChange={(e) => setSiguientesPasos(e.target.value)}
-                  placeholder="Ingrese los siguientes pasos..."
-                  readOnly={!isEditing}
-                  className={`min-h-20 ${!isEditing ? 'bg-muted' : ''}`}
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <ResultsSection
+          id={id}
+          isEditing={false}
+          data={liberation.resultados}
+          siguientesPasos={liberation.siguientesPasos}
+          onDataChange={() => {}}
+          onSiguientesPasosChange={() => {}}
+        />
       </div>
     </>
   )

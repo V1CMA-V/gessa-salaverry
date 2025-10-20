@@ -24,8 +24,18 @@ interface CaliberMeasurementsSectionProps {
   id: string
   isEditing?: boolean
   data?: number[][]
-  config?: String
+  config: string
   onDataChange?: (rowIdx: number, cellIdx: number, value: number) => void
+}
+
+// Mapeo de configuración a número de posiciones
+const CONFIG_TO_POSITIONS: { [key: string]: number } = {
+  sencillo: 2,
+  doble: 4,
+  triple: 6,
+  cuadruple: 8,
+  quintuple: 10,
+  sextuple: 12,
 }
 
 export function CaliberMeasurementsSection({
@@ -35,11 +45,15 @@ export function CaliberMeasurementsSection({
   config,
   onDataChange,
 }: CaliberMeasurementsSectionProps) {
+  // Obtener número de posiciones según configuración
+  const numPositions = CONFIG_TO_POSITIONS[config.toLowerCase()] || 10
+
   const handleCellChange = (rowIdx: number, cellIdx: number, value: number) => {
     if (onDataChange) {
       onDataChange(rowIdx, cellIdx, value)
     }
   }
+
 
   // Calcular estadísticas globales
   const statistics = useMemo(() => {
@@ -114,14 +128,31 @@ export function CaliberMeasurementsSection({
     }
   }, [data])
 
-  console.log('value', data)
+  // Generar encabezados de columnas dinámicamente
+  const columnHeaders = Array.from({ length: 8 }, (_, i) => i + 1)
+
+  // Generar filas de datos dinámicamente según configuración
+  const tableRows = useMemo(() => {
+    // Si hay datos, tomar solo las filas necesarias según configuración
+    if (data.length > 0) {
+      return data.slice(0, numPositions)
+    }
+
+    // Si no hay datos y estamos en modo edición, crear filas vacías
+    if (isEditing) {
+      return Array.from({ length: numPositions }, () => Array(8).fill(0))
+    }
+
+    return []
+  }, [data, isEditing, numPositions])
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Mediciones de Calibre: Liberación/Parada 1</CardTitle>
         <CardDescription>
-          Rollos Por Flecha/Posición - 10 Posiciones
+          Rollos Por Flecha/Posición - {numPositions} Posiciones (
+          {config.charAt(0).toUpperCase() + config.slice(1)})
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -130,14 +161,11 @@ export function CaliberMeasurementsSection({
             <TableHeader>
               <TableRow>
                 <TableHead className="w-32 bg-blue-200">Posición</TableHead>
-                <TableHead className="text-center bg-blue-200/80">1</TableHead>
-                <TableHead className="text-center bg-blue-200/80">2</TableHead>
-                <TableHead className="text-center bg-blue-200/80">3</TableHead>
-                <TableHead className="text-center bg-blue-200/80">4</TableHead>
-                <TableHead className="text-center bg-blue-200/80">5</TableHead>
-                <TableHead className="text-center bg-blue-200/80">6</TableHead>
-                <TableHead className="text-center bg-blue-200/80">7</TableHead>
-                <TableHead className="text-center bg-blue-200/80">8</TableHead>
+                {columnHeaders.map((num) => (
+                  <TableHead key={num} className="text-center bg-blue-200/80">
+                    {num}
+                  </TableHead>
+                ))}
                 <TableHead className="bg-amber-100 text-center">
                   Medida de Ancho
                 </TableHead>
@@ -147,7 +175,7 @@ export function CaliberMeasurementsSection({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((row, idx) => {
+              {tableRows.map((row, idx) => {
                 const min = Math.min(...row)
                 const max = Math.max(...row)
                 const sum = row.reduce((a, b) => a + b, 0)
@@ -290,7 +318,7 @@ export function CaliberMeasurementsSection({
             </CardContent>
           </Card>
           <div className="col-span-2">
-            <ControlChartSection value={data} />
+            <ControlChartSection value={data} config={config} />
           </div>
         </div>
       </CardContent>

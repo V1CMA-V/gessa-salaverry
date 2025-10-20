@@ -21,33 +21,53 @@ import {
 
 interface ControlChartSectionProps {
   value?: number[][]
+  config?: string
 }
 
-export function ControlChartSection({ value = [] }: ControlChartSectionProps) {
+// Mapeo de configuración a número de posiciones
+const CONFIG_TO_POSITIONS: { [key: string]: number } = {
+  sencillo: 2,
+  doble: 4,
+  triple: 6,
+  cuadruple: 8,
+  quintuple: 10,
+  sextuple: 12,
+}
+
+export function ControlChartSection({
+  value = [],
+  config = 'quintuple',
+}: ControlChartSectionProps) {
+  // Obtener número de posiciones según configuración
+  const numPositions = CONFIG_TO_POSITIONS[config.toLowerCase()] || 10
+
   // Transformar los datos de la matriz a formato de gráfico
   const chartData = React.useMemo(() => {
     if (!value || value.length === 0) return []
 
+    // Limitar los datos al número de posiciones según configuración
+    const limitedData = value.slice(0, numPositions)
+
     // Transponer la matriz: cada columna (parámetro) se convierte en una serie
-    const numParams = value[0]?.length || 8
+    const numParams = limitedData[0]?.length || 8
     const data = []
 
     // Crear un punto de datos por cada posición (fila)
-    for (let posIdx = 0; posIdx < value.length; posIdx++) {
+    for (let posIdx = 0; posIdx < limitedData.length; posIdx++) {
       const dataPoint: any = {
         position: `Pos ${posIdx + 1}`,
       }
 
       // Agregar cada parámetro (columna) como una serie
       for (let paramIdx = 0; paramIdx < numParams; paramIdx++) {
-        dataPoint[`param${paramIdx + 1}`] = value[posIdx][paramIdx] || 0
+        dataPoint[`param${paramIdx + 1}`] = limitedData[posIdx][paramIdx] || 0
       }
 
       data.push(dataPoint)
     }
 
     return data
-  }, [value])
+  }, [value, numPositions])
 
   // Configuración del gráfico con colores para cada parámetro
   const chartConfig = React.useMemo(() => {
@@ -84,7 +104,8 @@ export function ControlChartSection({ value = [] }: ControlChartSectionProps) {
         <div className="grid flex-1 gap-1">
           <CardTitle>Gráfico de Control</CardTitle>
           <CardDescription>
-            Mediciones de calibre por posición y parámetro
+            Mediciones de calibre - {numPositions} posiciones (
+            {config.charAt(0).toUpperCase() + config.slice(1)})
           </CardDescription>
         </div>
       </CardHeader>

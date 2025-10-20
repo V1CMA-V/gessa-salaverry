@@ -655,7 +655,6 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
 
       // Refrescar la página para mostrar los cambios
       router.replace('/dashboard/equipo')
-      console.log('Usuario actualizado:', data)
     } catch (error) {
       console.error('Error al actualizar usuario:', error)
       toast.error(

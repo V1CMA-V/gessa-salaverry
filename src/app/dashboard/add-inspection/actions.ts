@@ -5,8 +5,6 @@ import { createClient } from '@/utils/supabase/server'
 export async function newBatch(formData: FormData) {
   const supabase = await createClient()
 
-  console.log('creating new batch...')
-
   // Transformar FormData a objeto con tipos correctos
   const batchData = {
     batch_code: formData.get('batch_code') as string,
@@ -15,7 +13,6 @@ export async function newBatch(formData: FormData) {
     target_lot_weight_kg: Number(formData.get('target_lot_weight_kg')),
     target_weight_per_roll_kg: Number(formData.get('target_weight_per_r')),
   }
-  console.log('formData entries:', batchData)
 
   const { data, error } = await supabase
     .from('batches')
@@ -27,8 +24,6 @@ export async function newBatch(formData: FormData) {
     console.error('Error creating batch:', error)
     throw new Error('Error al crear el lote')
   }
-
-  console.log('new batch success', data)
 
   return { success: true, batch: data }
 }
@@ -62,5 +57,4 @@ export async function newInspection(formData: FormData) {
 
   await supabase.from('inspections').insert(inspectionData)
 
-  console.log('creating new inspection...')
 }
