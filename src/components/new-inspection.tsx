@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { redirect } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -131,7 +132,7 @@ export default function NewInspection() {
       formData.append('thickness_microns', data.thickness_microns)
       formData.append('nota', data.nota ?? '')
 
-      await newInspection(formData)
+      const link = await newInspection(formData)
 
       // Mostrar notificación de éxito
       toast.success('Inspección creada exitosamente', {
@@ -139,7 +140,7 @@ export default function NewInspection() {
       })
 
       // Limpiar el formulario
-      reset()
+      redirect(`/dashboard/${link.inspection.id}`)
     } catch (error) {
       console.error('Error al crear inspección:', error)
       // Mostrar notificación de error

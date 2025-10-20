@@ -52,9 +52,19 @@ export async function newInspection(formData: FormData) {
     batch_id: String(formData.get('batch_id') ?? ''),
     formulation_code: String(formData.get('formulation_code') ?? ''),
     feature: String(formData.get('feature') ?? ''),
-    nota: String(formData.get('nota') ?? ''),
+    note: String(formData.get('nota') ?? ''),
   }
 
-  await supabase.from('inspections').insert(inspectionData)
+  const { data, error } = await supabase
+    .from('inspections')
+    .insert(inspectionData)
+    .select('id')
+    .single()
 
+  if (error) {
+    console.error('Error creating inspection:', error)
+    throw new Error('Error al crear la inspección')
+  }
+
+  return { success: true, inspection: data }
 }

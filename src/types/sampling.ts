@@ -1,6 +1,12 @@
 // Tipos para el sistema de muestreo
 
-export type RollConfig = 'single' | 'doble' | 'triple' | 'cuadruple'
+export type RollConfig =
+  | 'sencillo'
+  | 'doble'
+  | 'triple'
+  | 'cuadruple'
+  | 'quintuple'
+  | 'sextuple'
 
 export interface BatchConfig {
   target_lot_weight: number // kg
@@ -53,10 +59,12 @@ export interface SamplingSession {
 // Función para obtener rollos por parada según configuración
 export function getRollsPerStop(config: RollConfig): number {
   const mapping: Record<RollConfig, number> = {
-    single: 2,
+    sencillo: 2,
     doble: 4,
     triple: 6,
     cuadruple: 8,
+    quintuple: 10,
+    sextuple: 12,
   }
   return mapping[config] || 4
 }
