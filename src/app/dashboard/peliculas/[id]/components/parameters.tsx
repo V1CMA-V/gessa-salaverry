@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
-import LiberationParams from "./liberacion-params"
-import ValidationParam from "./validation"
+// import LiberationParams from "./liberacion-params"
+// import ValidationParam from "./validation"
 
 interface ParametersProps {
   parametros: any[] | null
@@ -23,7 +23,10 @@ export default function Parameters({
 
       {/* Parametros de Liberacion */}
       {parametrosLiberacion ? (
-        <LiberationParams parametrosLiberacion={parametrosLiberacion} ID={peliculaId} />
+        <div className="p-4 border rounded-lg">
+          <p className="text-muted-foreground">Parámetros de liberación disponibles</p>
+          {/* <LiberationParams parametrosLiberacion={parametrosLiberacion} ID={peliculaId} /> */}
+        </div>
       ) : (
         <div></div>
       )}
@@ -35,7 +38,10 @@ export default function Parameters({
 
       {/* Parametros de Validacion */}
       {parametrosValidacion && parametrosValidacion.length > 0 ? (
-        <ValidationParam parametrosValidacion={parametrosValidacion} />
+        <div className="p-4 border rounded-lg">
+          <p className="text-muted-foreground">Parámetros de validación: {parametrosValidacion.length}</p>
+          {/* <ValidationParam parametrosValidacion={parametrosValidacion} /> */}
+        </div>
       ) : (
         parametrosLiberacion && <div></div>
       )}
